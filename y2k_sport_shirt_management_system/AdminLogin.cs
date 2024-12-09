@@ -71,7 +71,9 @@ namespace y2k_sport_shirt_management_system
                 {
                     int role = Convert.ToInt32(reader["role"]);
                     string name = reader["name"].ToString();
-
+                    string accountId = reader["account_id"].ToString();
+                    SessionStorage.Session.userName = name;
+                    SessionStorage.Session.accountId = accountId;
                     reader.Close();
                     dbConnection.CloseConnection();
 
@@ -79,7 +81,7 @@ namespace y2k_sport_shirt_management_system
                     if (role == 1) // Admin
                     {
                         MessageBox.Show($"Welcome, Admin {name}!", "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        Admin.Dashboard adminDashboard = new Admin.Dashboard(name); // Replace with your actual Admin Dashboard form
+                        Admin.Dashboard adminDashboard = new Admin.Dashboard(); // Replace with your actual Admin Dashboard form
                         this.Hide();
                         adminDashboard.Show();
                     }

@@ -12,11 +12,10 @@ namespace y2k_sport_shirt_management_system.Seller
 {
     public partial class Dashboard : Form
     {
-        private string _username;
-        public Dashboard(string username)
+       
+        public Dashboard()
         {
             InitializeComponent();
-            _username = username;
         }
 
         private void iconButton6_Click(object sender, EventArgs e)
@@ -28,7 +27,7 @@ namespace y2k_sport_shirt_management_system.Seller
 
         private void Dashboard_Load(object sender, EventArgs e)
         {
-            seller_name.Text = _username;
+            seller_name.Text = SessionStorage.Session.userName;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace y2k_sport_shirt_management_system.Model
     internal class DatabaseConnection
     {
         private MySqlConnection _connection;
-
+          
         public DatabaseConnection()
         {
             string connectionString = "server=127.0.0.1; user=root; database=y2k_sport; password=";

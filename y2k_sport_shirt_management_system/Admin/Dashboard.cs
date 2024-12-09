@@ -12,16 +12,16 @@ namespace y2k_sport_shirt_management_system.Admin
 {
     public partial class Dashboard : Form
     {
-        private string _userName;
-        public Dashboard(string userName)
+
+        public Dashboard()
         {
             InitializeComponent();
-            _userName = userName;
+
         }
 
         private void Dashboard_Load(object sender, EventArgs e)
         {
-            admin_name.Text = _userName;
+            admin_name.Text = SessionStorage.Session.userName;
         }
 
         private void iconButton1_Click(object sender, EventArgs e)
@@ -50,6 +50,13 @@ namespace y2k_sport_shirt_management_system.Admin
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void iconButton3_Click(object sender, EventArgs e)
+        {
+            Products product = new Products();
+            product.Show();
+            this.Hide();
         }
     }
 }

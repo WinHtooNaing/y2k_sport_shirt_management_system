@@ -47,15 +47,27 @@ namespace y2k_sport_shirt_management_system.Repository
         }
 
         // get all products
-        public List<Product> GetAllProducts()
+        public List<Product> GetAllProducts(string searchItem="")
         {
-            string query = "SELECT * FROM products";
             List<Product> products = new List<Product>();
+
+            string query = "SELECT * FROM products";
+            if(!string.IsNullOrEmpty(searchItem))
+            {
+                query += " WHERE product_name LIKE @SearchItem";
+            }
+
             try
             {
                 _dbConnection.OpenConnection();
                 MySqlConnection connection = _dbConnection.GetConnection();
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                if (!string.IsNullOrEmpty(searchItem))
+                {
+                    cmd.Parameters.AddWithValue("@SearchItem","%" + searchItem + "%");
+                }
+
                 MySqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -137,6 +149,44 @@ namespace y2k_sport_shirt_management_system.Repository
             {
                 _dbConnection.CloseConnection();
             }
+        }
+        // Read by ID
+        public Product GetProductById(int id)
+        {
+            string query = "SELECT * FROM products WHERE id = @Id";
+
+            try
+            {
+                _dbConnection.OpenConnection();
+                MySqlConnection connection = _dbConnection.GetConnection();
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@Id", id);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    return new Product
+                    {
+                        Id = Convert.ToInt32(reader["id"]),
+                        ProductName = reader["product_name"].ToString(),
+                        ProductPrice = Convert.ToDecimal(reader["product_price"]),
+                        ProductQuantity = Convert.ToInt32(reader["product_quantity"]),
+                        ProductCategory = reader["product_category"].ToString()
+                    };
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching product: " + ex.Message);
+            }
+            finally
+            {
+                _dbConnection.CloseConnection();
+            }
+
+            return null;
         }
 
     }

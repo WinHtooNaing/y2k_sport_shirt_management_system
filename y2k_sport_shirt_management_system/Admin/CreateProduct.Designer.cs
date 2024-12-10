@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             loginBtn = new Button();
-            idTxt = new TextBox();
+            nameTxt = new TextBox();
             label2 = new Label();
             label1 = new Label();
-            textBox1 = new TextBox();
+            priceTxt = new TextBox();
             label3 = new Label();
-            textBox2 = new TextBox();
+            qtyTxt = new TextBox();
             label4 = new Label();
-            comboBox1 = new ComboBox();
             label5 = new Label();
+            categoryTxt = new TextBox();
             SuspendLayout();
             // 
             // loginBtn
@@ -57,17 +57,17 @@
             loginBtn.UseVisualStyleBackColor = false;
             loginBtn.Click += loginBtn_Click;
             // 
-            // idTxt
+            // nameTxt
             // 
-            idTxt.BackColor = Color.White;
-            idTxt.BorderStyle = BorderStyle.FixedSingle;
-            idTxt.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            idTxt.ForeColor = Color.RoyalBlue;
-            idTxt.Location = new Point(135, 128);
-            idTxt.Multiline = true;
-            idTxt.Name = "idTxt";
-            idTxt.Size = new Size(232, 40);
-            idTxt.TabIndex = 10;
+            nameTxt.BackColor = Color.White;
+            nameTxt.BorderStyle = BorderStyle.FixedSingle;
+            nameTxt.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            nameTxt.ForeColor = Color.RoyalBlue;
+            nameTxt.Location = new Point(135, 128);
+            nameTxt.Multiline = true;
+            nameTxt.Name = "nameTxt";
+            nameTxt.Size = new Size(232, 40);
+            nameTxt.TabIndex = 10;
             // 
             // label2
             // 
@@ -93,17 +93,17 @@
             label1.TextAlign = ContentAlignment.TopCenter;
             label1.Click += label1_Click;
             // 
-            // textBox1
+            // priceTxt
             // 
-            textBox1.BackColor = Color.White;
-            textBox1.BorderStyle = BorderStyle.FixedSingle;
-            textBox1.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBox1.ForeColor = Color.RoyalBlue;
-            textBox1.Location = new Point(135, 217);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(232, 40);
-            textBox1.TabIndex = 16;
+            priceTxt.BackColor = Color.White;
+            priceTxt.BorderStyle = BorderStyle.FixedSingle;
+            priceTxt.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            priceTxt.ForeColor = Color.RoyalBlue;
+            priceTxt.Location = new Point(135, 217);
+            priceTxt.Multiline = true;
+            priceTxt.Name = "priceTxt";
+            priceTxt.Size = new Size(232, 40);
+            priceTxt.TabIndex = 16;
             // 
             // label3
             // 
@@ -116,18 +116,18 @@
             label3.TabIndex = 15;
             label3.Text = "product price";
             // 
-            // textBox2
+            // qtyTxt
             // 
-            textBox2.BackColor = Color.White;
-            textBox2.BorderStyle = BorderStyle.FixedSingle;
-            textBox2.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBox2.ForeColor = Color.RoyalBlue;
-            textBox2.Location = new Point(135, 307);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(232, 40);
-            textBox2.TabIndex = 18;
-            textBox2.TextChanged += textBox2_TextChanged;
+            qtyTxt.BackColor = Color.White;
+            qtyTxt.BorderStyle = BorderStyle.FixedSingle;
+            qtyTxt.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            qtyTxt.ForeColor = Color.RoyalBlue;
+            qtyTxt.Location = new Point(135, 307);
+            qtyTxt.Multiline = true;
+            qtyTxt.Name = "qtyTxt";
+            qtyTxt.Size = new Size(232, 40);
+            qtyTxt.TabIndex = 18;
+            qtyTxt.TextChanged += textBox2_TextChanged;
             // 
             // label4
             // 
@@ -141,18 +141,6 @@
             label4.Text = "product quantity";
             label4.Click += label4_Click;
             // 
-            // comboBox1
-            // 
-            comboBox1.BackColor = Color.White;
-            comboBox1.DropDownHeight = 200;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.IntegralHeight = false;
-            comboBox1.Items.AddRange(new object[] { "M,L,XL" });
-            comboBox1.Location = new Point(135, 399);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(232, 23);
-            comboBox1.TabIndex = 19;
-            // 
             // label5
             // 
             label5.AutoSize = true;
@@ -164,20 +152,32 @@
             label5.TabIndex = 20;
             label5.Text = "product category";
             // 
+            // categoryTxt
+            // 
+            categoryTxt.BackColor = Color.White;
+            categoryTxt.BorderStyle = BorderStyle.FixedSingle;
+            categoryTxt.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            categoryTxt.ForeColor = Color.RoyalBlue;
+            categoryTxt.Location = new Point(135, 401);
+            categoryTxt.Multiline = true;
+            categoryTxt.Name = "categoryTxt";
+            categoryTxt.Size = new Size(232, 40);
+            categoryTxt.TabIndex = 21;
+            // 
             // CreateProduct
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(493, 527);
+            Controls.Add(categoryTxt);
             Controls.Add(label5);
-            Controls.Add(comboBox1);
-            Controls.Add(textBox2);
+            Controls.Add(qtyTxt);
             Controls.Add(label4);
-            Controls.Add(textBox1);
+            Controls.Add(priceTxt);
             Controls.Add(label3);
             Controls.Add(loginBtn);
-            Controls.Add(idTxt);
+            Controls.Add(nameTxt);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "CreateProduct";
@@ -190,14 +190,14 @@
         #endregion
 
         private Button loginBtn;
-        private TextBox idTxt;
+        private TextBox nameTxt;
         private Label label2;
         private Label label1;
-        private TextBox textBox1;
+        private TextBox priceTxt;
         private Label label3;
-        private TextBox textBox2;
+        private TextBox qtyTxt;
         private Label label4;
-        private ComboBox comboBox1;
         private Label label5;
+        private TextBox categoryTxt;
     }
 }

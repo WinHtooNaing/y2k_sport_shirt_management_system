@@ -42,6 +42,9 @@
             iconButton1 = new FontAwesome.Sharp.IconButton();
             addProductBtn = new Button();
             productsGridView = new DataGridView();
+            searchTxt = new TextBox();
+            serachBtn = new Button();
+            clearBtn = new Button();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -80,6 +83,7 @@
             iconButton6.TabIndex = 7;
             iconButton6.Text = "Logout";
             iconButton6.UseVisualStyleBackColor = true;
+            iconButton6.Click += iconButton6_Click;
             // 
             // iconButton5
             // 
@@ -238,12 +242,56 @@
             productsGridView.TabIndex = 6;
             productsGridView.CellContentClick += dataGridView1_CellContentClick;
             // 
+            // searchTxt
+            // 
+            searchTxt.Location = new Point(713, 63);
+            searchTxt.Multiline = true;
+            searchTxt.Name = "searchTxt";
+            searchTxt.Size = new Size(206, 42);
+            searchTxt.TabIndex = 7;
+            searchTxt.TextChanged += textBox1_TextChanged;
+            // 
+            // serachBtn
+            // 
+            serachBtn.BackColor = Color.RoyalBlue;
+            serachBtn.Cursor = Cursors.Hand;
+            serachBtn.FlatAppearance.BorderSize = 0;
+            serachBtn.FlatStyle = FlatStyle.Flat;
+            serachBtn.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            serachBtn.ForeColor = Color.White;
+            serachBtn.Location = new Point(925, 62);
+            serachBtn.Name = "serachBtn";
+            serachBtn.Size = new Size(87, 42);
+            serachBtn.TabIndex = 8;
+            serachBtn.Text = "Search";
+            serachBtn.UseVisualStyleBackColor = false;
+            serachBtn.Click += serachBtn_Click;
+            // 
+            // clearBtn
+            // 
+            clearBtn.BackColor = Color.Crimson;
+            clearBtn.Cursor = Cursors.Hand;
+            clearBtn.FlatAppearance.BorderSize = 0;
+            clearBtn.FlatStyle = FlatStyle.Flat;
+            clearBtn.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            clearBtn.ForeColor = Color.White;
+            clearBtn.Location = new Point(1018, 62);
+            clearBtn.Name = "clearBtn";
+            clearBtn.Size = new Size(87, 42);
+            clearBtn.TabIndex = 9;
+            clearBtn.Text = "clear";
+            clearBtn.UseVisualStyleBackColor = false;
+            clearBtn.Click += button2_Click;
+            // 
             // Products
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1123, 494);
+            Controls.Add(clearBtn);
+            Controls.Add(serachBtn);
+            Controls.Add(searchTxt);
             Controls.Add(productsGridView);
             Controls.Add(addProductBtn);
             Controls.Add(panel1);
@@ -259,6 +307,7 @@
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)productsGridView).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -276,5 +325,8 @@
         private FontAwesome.Sharp.IconButton iconButton1;
         private Button addProductBtn;
         private DataGridView productsGridView;
+        private TextBox searchTxt;
+        private Button serachBtn;
+        private Button clearBtn;
     }
 }

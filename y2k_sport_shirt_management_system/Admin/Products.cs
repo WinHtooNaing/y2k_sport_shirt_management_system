@@ -37,12 +37,19 @@ namespace y2k_sport_shirt_management_system.Admin
             LoadProductsIntoGrid();
             admin_name.Text = SessionStorage.Session.userName;
         }
-        private void LoadProductsIntoGrid()
+        private void LoadProductsIntoGrid(string searchItem = "")
         {
             try
             {
                 // Fetch all products from the repository
                 var products = productRepository.GetAllProducts();
+
+                if (!string.IsNullOrEmpty(searchItem))
+                {
+                    products = products.Where(
+                        product => product.ProductName.Contains(searchItem, StringComparison.OrdinalIgnoreCase)
+                        ).ToList();
+                }
 
                 // Bind the products list to the DataGridView
                 productsGridView.DataSource = products;
@@ -134,8 +141,10 @@ namespace y2k_sport_shirt_management_system.Admin
 
         private void EditProduct(int productId)
         {
-            // TODO: Open a form for editing the product details, passing the productId
-            MessageBox.Show($"Edit product with ID: {productId}");
+            EditProduct editProduct = new EditProduct(productId);
+            editProduct.Show();
+            this.Hide();
+
         }
 
         public void DeleteProduct(int productId)
@@ -194,6 +203,30 @@ namespace y2k_sport_shirt_management_system.Admin
         {
             CreateProduct createProduct = new CreateProduct();
             createProduct.Show();
+            this.Hide();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            searchTxt.Text = "";
+            LoadProductsIntoGrid();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void serachBtn_Click(object sender, EventArgs e)
+        {
+            string search = searchTxt.Text.Trim();
+            LoadProductsIntoGrid(search);
+        }
+
+        private void iconButton6_Click(object sender, EventArgs e)
+        {
+           Main main = new Main();
+            main.Show();    
             this.Hide();
         }
     }

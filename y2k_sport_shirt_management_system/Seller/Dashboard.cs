@@ -7,15 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using y2k_sport_shirt_management_system.Admin;
+using y2k_sport_shirt_management_system.Model;
+using y2k_sport_shirt_management_system.Repository;
 
 namespace y2k_sport_shirt_management_system.Seller
 {
     public partial class Dashboard : Form
     {
        
+        private readonly ProductRepository productRepository;
+        private readonly FakeSellProductRepository fakeSellProductRepository;
         public Dashboard()
         {
             InitializeComponent();
+            productRepository = new ProductRepository();
+            fakeSellProductRepository = new FakeSellProductRepository();
         }
 
         private void iconButton6_Click(object sender, EventArgs e)
@@ -28,6 +35,386 @@ namespace y2k_sport_shirt_management_system.Seller
         private void Dashboard_Load(object sender, EventArgs e)
         {
             seller_name.Text = SessionStorage.Session.userName;
+            LoadProductsIntoGrid();
+            LoadFakeProductsIntoGrid();
+            
+            
+
+            
+
+
+            fakeProductsGridView.CellEndEdit += fakeProductsGridView_CellEndEdit;
+            fakeProductsGridView.CellValueChanged += fakeProductsGridView_CellValueChanged;
+
+        }
+        private void fakeProductsGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && fakeProductsGridView.Columns[e.ColumnIndex].Name == "Quantity")
+            {
+                // Commit changes to ensure CellValueChanged is triggered
+                fakeProductsGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+        private void fakeProductsGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && fakeProductsGridView.Columns[e.ColumnIndex].Name == "Quantity")
+            {
+                try
+                {
+                    // Get the updated quantity value
+                    var quantityCell = fakeProductsGridView.Rows[e.RowIndex].Cells["Quantity"];
+                    int quantity = int.TryParse(quantityCell.Value?.ToString(), out int parsedQuantity) ? parsedQuantity : 1;
+
+                    if (quantity < 1) // Validate quantity
+                    {
+                        MessageBox.Show("Quantity must be 1 or greater.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        quantityCell.Value = 1; // Reset invalid quantity to default (1)
+                        quantity = 1;
+                    }
+
+                    // Get the product price
+                    decimal price = Convert.ToDecimal(fakeProductsGridView.Rows[e.RowIndex].Cells["ProductPrice"].Value);
+
+                    // Calculate and update the Total Price
+                    fakeProductsGridView.Rows[e.RowIndex].Cells["TotalPrice"].Value = quantity * price;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error updating total price: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void LoadProductsIntoGrid(string searchItem = "")
+        {
+            try
+            {
+                // Fetch all products from the repository
+                var products = productRepository.GetAllProducts();
+
+                if (!string.IsNullOrEmpty(searchItem))
+                {
+                    products = products.Where(
+                        product => product.ProductName.Contains(searchItem, StringComparison.OrdinalIgnoreCase)
+                        ).ToList();
+                }
+
+                // Bind the products list to the DataGridView
+                productsGridView.DataSource = products;
+
+
+                // Add a "No" column for numbering
+                if (!productsGridView.Columns.Contains("No"))
+                {
+                    DataGridViewTextBoxColumn noColumn = new DataGridViewTextBoxColumn
+                    {
+                        Name = "No",
+                        HeaderText = "No",
+                        ReadOnly = true
+                    };
+                    productsGridView.Columns.Insert(0, noColumn);
+                }
+
+                // Add Edit button
+                if (!productsGridView.Columns.Contains("SellToList"))
+                {
+                    DataGridViewButtonColumn editColumn = new DataGridViewButtonColumn
+                    {
+                        Name = "SellToList",
+                        HeaderText = "",
+                        Text = "Sell to list",
+                        UseColumnTextForButtonValue = true
+                    };
+                    productsGridView.Columns.Add(editColumn);
+                    editColumn.DefaultCellStyle.BackColor = Color.Orange;
+                    editColumn.DefaultCellStyle.ForeColor = Color.White;
+                }
+
+
+
+                // Populate "No" column with sequential numbers
+                for (int i = 0; i < productsGridView.Rows.Count; i++)
+                {
+                    productsGridView.Rows[i].Cells["No"].Value = i + 1;
+                }
+
+                // Customize the DataGridView
+                productsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                // Hide the "Id" column
+                if (productsGridView.Columns.Contains("Id"))
+                {
+                    productsGridView.Columns["Id"].Visible = false; // Hide the ID column
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading products: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadFakeProductsIntoGrid()
+        {
+            try
+            {
+               
+
+                var products = fakeSellProductRepository.GetAllProducts();
+
+
+
+                // Bind the products list to the DataGridView
+                fakeProductsGridView.DataSource = products;
+
+
+                // Add a "No" column for numbering
+                if (!fakeProductsGridView.Columns.Contains("No"))
+                {
+                    DataGridViewTextBoxColumn noColumn = new DataGridViewTextBoxColumn
+                    {
+                        Name = "No",
+                        HeaderText = "No",
+                        ReadOnly = true
+                    };
+                    fakeProductsGridView.Columns.Insert(0, noColumn);
+                }
+                // Add a "Quantity" column if not exists
+                if (!fakeProductsGridView.Columns.Contains("Quantity"))
+                {
+                    DataGridViewTextBoxColumn qtyColumn = new DataGridViewTextBoxColumn
+                    {
+                        Name = "Quantity",
+                        HeaderText = "Quantity",
+                        DefaultCellStyle = new DataGridViewCellStyle { NullValue = "1" } // Default value
+                    };
+                    fakeProductsGridView.Columns.Insert(6, qtyColumn);
+                }
+                // Add a "Total Price" column if not exists
+                if (!fakeProductsGridView.Columns.Contains("TotalPrice"))
+                {
+                    DataGridViewTextBoxColumn totalPriceColumn = new DataGridViewTextBoxColumn
+                    {
+                        Name = "TotalPrice",
+                        HeaderText = "Total Price",
+                        ReadOnly = true // Total price is calculated, not editable
+                    };
+                    fakeProductsGridView.Columns.Insert(7, totalPriceColumn);
+                }
+                // Add Delete button
+                if (!fakeProductsGridView.Columns.Contains("Delete"))
+                {
+                    DataGridViewButtonColumn deleteCoulmn = new DataGridViewButtonColumn
+                    {
+                        Name = "Delete",
+                        HeaderText = "",
+                        Text = "Delete",
+                        UseColumnTextForButtonValue = true
+                    };
+                    fakeProductsGridView.Columns.Add(deleteCoulmn);
+                    deleteCoulmn.DefaultCellStyle.BackColor = Color.Orange;
+                    deleteCoulmn.DefaultCellStyle.ForeColor = Color.White;
+                }
+
+
+
+                // Populate "No" column with sequential numbers
+                for (int i = 0; i < fakeProductsGridView.Rows.Count; i++)
+                {
+                    fakeProductsGridView.Rows[i].Cells["No"].Value = i + 1;
+
+                    // Set initial total price (quantity * price)
+                    int quantity = Convert.ToInt32(fakeProductsGridView.Rows[i].Cells["Quantity"].Value ?? 1);
+                    decimal price = Convert.ToDecimal(fakeProductsGridView.Rows[i].Cells["ProductPrice"].Value);
+                    fakeProductsGridView.Rows[i].Cells["TotalPrice"].Value = quantity * price;
+                    
+                }
+                
+                // Customize the DataGridView
+                fakeProductsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                // Hide the "Id" column
+                if (fakeProductsGridView.Columns.Contains("Id"))
+                {
+                    fakeProductsGridView.Columns["Id"].Visible = false; // Hide the ID column
+                }
+                // Hide the "Id" column
+                if (fakeProductsGridView.Columns.Contains("ProductId"))
+                {
+                    fakeProductsGridView.Columns["ProductId"].Visible = false; // Hide the ID column
+                }
+                // Hide the "Product Price" column
+                if (fakeProductsGridView.Columns.Contains("ProductPrice"))
+                {
+                    fakeProductsGridView.Columns["ProductPrice"].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading products: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+       
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void iconButton1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void productsGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Ensure the clicked cell is a button
+            if (e.RowIndex >= 0 && (e.ColumnIndex == productsGridView.Columns["SellToList"].Index))
+            {
+                // Get the selected product's ID
+                int productId = Convert.ToInt32(productsGridView.Rows[e.RowIndex].Cells["Id"].Value);
+
+                if (e.ColumnIndex == productsGridView.Columns["SellToList"].Index)
+                {
+                    SellToList(productId);
+                }
+
+            }
+        }
+        private void SellToList(int productId)
+        {
+            try
+            {
+                // Create a ProductRepository instance to fetch product details
+                var productRepository = new ProductRepository();
+
+                // Fetch product by ID
+                var product = productRepository.GetProductById(productId);
+
+                if (product != null)
+                {
+                    FakeSellProduct newProduct = new FakeSellProduct
+                    {
+                        ProductId = productId,
+                        ProductName = product.ProductName,
+                        ProductPrice = product.ProductPrice,
+                        ProductCategory = product.ProductCategory
+                    };
+                    if (fakeSellProductRepository.AddProduct(newProduct))
+                    {
+                        LoadFakeProductsIntoGrid();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Product  already exists.", "create prduct", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Product not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading product details: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void serachBtn_Click(object sender, EventArgs e)
+        {
+            string search = searchTxt.Text.Trim();
+            LoadProductsIntoGrid(search);
+        }
+
+        private void clearBtn_Click(object sender, EventArgs e)
+        {
+            searchTxt.Text = "";
+            LoadProductsIntoGrid();
+        }
+
+        private void fakeProductsGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Ensure the clicked cell is a button
+            if (e.RowIndex >= 0 && (e.ColumnIndex == fakeProductsGridView.Columns["Delete"].Index))
+            {
+                // Get the selected product's ID
+                int productId = Convert.ToInt32(fakeProductsGridView.Rows[e.RowIndex].Cells["Id"].Value);
+
+                if (e.ColumnIndex == fakeProductsGridView.Columns["Delete"].Index)
+                {
+                    DeleteById(productId);
+                }
+
+            }
+        }
+        private void DeleteById(int id)
+        {
+            if (fakeSellProductRepository.DeleteProduct(id))
+            {
+                LoadFakeProductsIntoGrid();
+            }
+            else
+            {
+                MessageBox.Show("product deleted fail", "Seller Delete", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void cancleBtn_Click(object sender, EventArgs e)
+        {
+            if (fakeSellProductRepository.DeleteAllProducts())
+            {
+                LoadFakeProductsIntoGrid();
+            }
+            else
+            {
+                MessageBox.Show("product deleted fail", "Seller Delete", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void sellBtn_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in fakeProductsGridView.Rows)
+            {
+                if (row.Cells["ProductId"].Value != null && row.Cells["Quantity"].Value != null)
+                {
+                    int productId = Convert.ToInt32(row.Cells["ProductId"].Value);
+                    int soldQuantity = Convert.ToInt32(row.Cells["Quantity"].Value);
+
+                    // Fetch the product to update the quantity
+                    var product = productRepository.GetProductById(productId);
+
+                    if (product != null)
+                    {
+                        if (product.ProductQuantity >= soldQuantity)
+                        {
+                            product.ProductQuantity -= soldQuantity; // Deduct the sold quantity
+                            productRepository.UpdateProduct(product); // Update the product in the database
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                $"Not enough stock for {product.ProductName}. Available: {product.ProductQuantity}, Sold: {soldQuantity}",
+                                "Stock Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                            return;
+                        }
+                    }
+                }
+            }
+            if (fakeSellProductRepository.DeleteAllProducts())
+            {
+                MessageBox.Show("Product Sell successfullly", "selling products", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadFakeProductsIntoGrid();
+                LoadProductsIntoGrid();
+
+            }
+            else
+            {
+                MessageBox.Show("product deleted fail", "Seller Delete", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

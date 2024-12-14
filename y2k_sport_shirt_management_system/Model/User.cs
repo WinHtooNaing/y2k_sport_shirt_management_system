@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace y2k_sport_shirt_management_system.Model
 {
-    internal class User
+    public class User
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string AccountId { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -225,8 +225,15 @@ namespace y2k_sport_shirt_management_system.Admin
 
         private void iconButton6_Click(object sender, EventArgs e)
         {
-           Main main = new Main();
-            main.Show();    
+            Main main = new Main();
+            main.Show();
+            this.Hide();
+        }
+
+        private void iconButton5_Click(object sender, EventArgs e)
+        {
+            SellerManagement.Seller seller = new SellerManagement.Seller();
+            seller.Show();
             this.Hide();
         }
     }

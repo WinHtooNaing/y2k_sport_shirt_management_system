@@ -1,6 +1,6 @@
-﻿namespace y2k_sport_shirt_management_system.Admin
+﻿namespace y2k_sport_shirt_management_system.Admin.SellerManagement
 {
-    partial class Products
+    partial class Seller
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Products));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Seller));
             panel1 = new Panel();
             iconButton6 = new FontAwesome.Sharp.IconButton();
             iconButton5 = new FontAwesome.Sharp.IconButton();
@@ -40,16 +40,13 @@
             panel2 = new Panel();
             admin_name = new Label();
             iconButton1 = new FontAwesome.Sharp.IconButton();
+            sellersGridView = new DataGridView();
             addProductBtn = new Button();
-            productsGridView = new DataGridView();
-            searchTxt = new TextBox();
-            serachBtn = new Button();
-            clearBtn = new Button();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)productsGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)sellersGridView).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -65,7 +62,7 @@
             panel1.Location = new Point(-1, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(280, 495);
-            panel1.TabIndex = 3;
+            panel1.TabIndex = 10;
             // 
             // iconButton6
             // 
@@ -91,16 +88,16 @@
             iconButton5.FlatStyle = FlatStyle.Flat;
             iconButton5.Font = new Font("Times New Roman", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             iconButton5.ForeColor = Color.RoyalBlue;
-            iconButton5.IconChar = FontAwesome.Sharp.IconChar.Users;
+            iconButton5.IconChar = FontAwesome.Sharp.IconChar.ProductHunt;
             iconButton5.IconColor = Color.RoyalBlue;
             iconButton5.IconFont = FontAwesome.Sharp.IconFont.Auto;
             iconButton5.IconSize = 40;
             iconButton5.ImageAlign = ContentAlignment.MiddleLeft;
-            iconButton5.Location = new Point(11, 167);
+            iconButton5.Location = new Point(12, 114);
             iconButton5.Name = "iconButton5";
-            iconButton5.Size = new Size(161, 49);
+            iconButton5.Size = new Size(183, 49);
             iconButton5.TabIndex = 6;
-            iconButton5.Text = "Seller";
+            iconButton5.Text = "Products";
             iconButton5.UseVisualStyleBackColor = true;
             iconButton5.Click += iconButton5_Click;
             // 
@@ -115,21 +112,23 @@
             iconButton4.IconFont = FontAwesome.Sharp.IconFont.Auto;
             iconButton4.IconSize = 40;
             iconButton4.ImageAlign = ContentAlignment.MiddleLeft;
-            iconButton4.Location = new Point(11, 222);
+            iconButton4.Location = new Point(12, 227);
             iconButton4.Name = "iconButton4";
             iconButton4.Size = new Size(208, 49);
             iconButton4.TabIndex = 5;
             iconButton4.Text = "bar product";
             iconButton4.UseVisualStyleBackColor = true;
+            iconButton4.Click += iconButton4_Click;
             // 
             // panel3
             // 
             panel3.BackColor = Color.RoyalBlue;
             panel3.Controls.Add(iconButton2);
-            panel3.Location = new Point(0, 106);
+            panel3.Location = new Point(1, 169);
             panel3.Name = "panel3";
             panel3.Size = new Size(279, 55);
             panel3.TabIndex = 4;
+            panel3.Paint += panel3_Paint;
             // 
             // iconButton2
             // 
@@ -137,16 +136,16 @@
             iconButton2.FlatStyle = FlatStyle.Flat;
             iconButton2.Font = new Font("Times New Roman", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             iconButton2.ForeColor = Color.White;
-            iconButton2.IconChar = FontAwesome.Sharp.IconChar.ProductHunt;
+            iconButton2.IconChar = FontAwesome.Sharp.IconChar.Users;
             iconButton2.IconColor = Color.White;
             iconButton2.IconFont = FontAwesome.Sharp.IconFont.Auto;
             iconButton2.IconSize = 40;
             iconButton2.ImageAlign = ContentAlignment.MiddleLeft;
-            iconButton2.Location = new Point(12, 6);
+            iconButton2.Location = new Point(11, 3);
             iconButton2.Name = "iconButton2";
-            iconButton2.Size = new Size(180, 49);
+            iconButton2.Size = new Size(161, 49);
             iconButton2.TabIndex = 3;
-            iconButton2.Text = "Products";
+            iconButton2.Text = "Seller";
             iconButton2.UseVisualStyleBackColor = true;
             iconButton2.Click += iconButton2_Click;
             // 
@@ -187,7 +186,7 @@
             panel2.Location = new Point(278, 0);
             panel2.Name = "panel2";
             panel2.Size = new Size(846, 54);
-            panel2.TabIndex = 4;
+            panel2.TabIndex = 11;
             // 
             // admin_name
             // 
@@ -215,7 +214,16 @@
             iconButton1.Size = new Size(30, 30);
             iconButton1.TabIndex = 0;
             iconButton1.UseVisualStyleBackColor = true;
-            iconButton1.Click += iconButton1_Click;
+            // 
+            // sellersGridView
+            // 
+            sellersGridView.BackgroundColor = Color.White;
+            sellersGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            sellersGridView.Location = new Point(314, 128);
+            sellersGridView.Name = "sellersGridView";
+            sellersGridView.Size = new Size(788, 343);
+            sellersGridView.TabIndex = 13;
+            sellersGridView.CellContentClick += sellersGridView_CellContentClick;
             // 
             // addProductBtn
             // 
@@ -228,106 +236,48 @@
             addProductBtn.Location = new Point(314, 62);
             addProductBtn.Name = "addProductBtn";
             addProductBtn.Size = new Size(119, 47);
-            addProductBtn.TabIndex = 5;
-            addProductBtn.Text = "Add Product";
+            addProductBtn.TabIndex = 12;
+            addProductBtn.Text = "Add Seller";
             addProductBtn.UseVisualStyleBackColor = false;
             addProductBtn.Click += addProductBtn_Click;
             // 
-            // productsGridView
-            // 
-            productsGridView.BackgroundColor = Color.White;
-            productsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            productsGridView.Location = new Point(314, 128);
-            productsGridView.Name = "productsGridView";
-            productsGridView.Size = new Size(788, 343);
-            productsGridView.TabIndex = 6;
-            productsGridView.CellContentClick += dataGridView1_CellContentClick;
-            // 
-            // searchTxt
-            // 
-            searchTxt.Location = new Point(713, 63);
-            searchTxt.Multiline = true;
-            searchTxt.Name = "searchTxt";
-            searchTxt.Size = new Size(206, 42);
-            searchTxt.TabIndex = 7;
-            searchTxt.TextChanged += textBox1_TextChanged;
-            // 
-            // serachBtn
-            // 
-            serachBtn.BackColor = Color.RoyalBlue;
-            serachBtn.Cursor = Cursors.Hand;
-            serachBtn.FlatAppearance.BorderSize = 0;
-            serachBtn.FlatStyle = FlatStyle.Flat;
-            serachBtn.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            serachBtn.ForeColor = Color.White;
-            serachBtn.Location = new Point(925, 62);
-            serachBtn.Name = "serachBtn";
-            serachBtn.Size = new Size(87, 42);
-            serachBtn.TabIndex = 8;
-            serachBtn.Text = "Search";
-            serachBtn.UseVisualStyleBackColor = false;
-            serachBtn.Click += serachBtn_Click;
-            // 
-            // clearBtn
-            // 
-            clearBtn.BackColor = Color.Crimson;
-            clearBtn.Cursor = Cursors.Hand;
-            clearBtn.FlatAppearance.BorderSize = 0;
-            clearBtn.FlatStyle = FlatStyle.Flat;
-            clearBtn.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            clearBtn.ForeColor = Color.White;
-            clearBtn.Location = new Point(1018, 62);
-            clearBtn.Name = "clearBtn";
-            clearBtn.Size = new Size(87, 42);
-            clearBtn.TabIndex = 9;
-            clearBtn.Text = "clear";
-            clearBtn.UseVisualStyleBackColor = false;
-            clearBtn.Click += button2_Click;
-            // 
-            // Products
+            // Seller
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1123, 494);
-            Controls.Add(clearBtn);
-            Controls.Add(serachBtn);
-            Controls.Add(searchTxt);
-            Controls.Add(productsGridView);
-            Controls.Add(addProductBtn);
             Controls.Add(panel1);
             Controls.Add(panel2);
-            Name = "Products";
+            Controls.Add(sellersGridView);
+            Controls.Add(addProductBtn);
+            Name = "Seller";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Products";
-            Load += Products_Load;
+            Text = "Seller";
+            Load += Seller_Load;
             panel1.ResumeLayout(false);
             panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)productsGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)sellersGridView).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private Panel panel1;
+        private FontAwesome.Sharp.IconButton iconButton2;
         private FontAwesome.Sharp.IconButton iconButton6;
         private FontAwesome.Sharp.IconButton iconButton5;
         private FontAwesome.Sharp.IconButton iconButton4;
-        private FontAwesome.Sharp.IconButton iconButton3;
         private Panel panel3;
-        private FontAwesome.Sharp.IconButton iconButton2;
+        private FontAwesome.Sharp.IconButton iconButton3;
         private PictureBox pictureBox1;
         private Panel panel2;
         private Label admin_name;
         private FontAwesome.Sharp.IconButton iconButton1;
+        private DataGridView sellersGridView;
         private Button addProductBtn;
-        private DataGridView productsGridView;
-        private TextBox searchTxt;
-        private Button serachBtn;
-        private Button clearBtn;
     }
 }

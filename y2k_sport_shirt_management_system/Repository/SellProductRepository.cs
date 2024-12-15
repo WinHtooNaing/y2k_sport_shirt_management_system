@@ -50,7 +50,7 @@ namespace y2k_sport_shirt_management_system.Repository
             string query = "SELECT * FROM sell_products";
             if (!string.IsNullOrEmpty(searchItem))
             {
-                query += " WHERE product_name LIKE @SearchItem";
+                query += " WHERE seller_name LIKE @SearchItem";
             }
             try
             {
@@ -92,5 +92,36 @@ namespace y2k_sport_shirt_management_system.Repository
             return products;
 
         }
+        public List<string> GetAllSellerNames()
+        {
+            List<string> sellerName = new List<string>();
+            string query = "SELECT name FROM users WHERE role=0;";
+
+            try
+            {
+                _dbConnection.OpenConnection();
+                MySqlConnection connection = _dbConnection.GetConnection();
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    sellerName.Add(reader["name"].ToString());
+                }
+
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching usernames: " + ex.Message);
+            }
+            finally
+            {
+                _dbConnection.CloseConnection();
+            }
+
+            return sellerName;
+        }
+
     }
 }

@@ -42,8 +42,8 @@
             iconButton1 = new FontAwesome.Sharp.IconButton();
             clearBtn = new Button();
             serachBtn = new Button();
-            searchTxt = new TextBox();
             sellProductsGridView = new DataGridView();
+            sellerComboBox = new ComboBox();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -227,6 +227,7 @@
             clearBtn.TabIndex = 16;
             clearBtn.Text = "clear";
             clearBtn.UseVisualStyleBackColor = false;
+            clearBtn.Click += clearBtn_Click;
             // 
             // serachBtn
             // 
@@ -242,14 +243,7 @@
             serachBtn.TabIndex = 15;
             serachBtn.Text = "Search";
             serachBtn.UseVisualStyleBackColor = false;
-            // 
-            // searchTxt
-            // 
-            searchTxt.Location = new Point(713, 63);
-            searchTxt.Multiline = true;
-            searchTxt.Name = "searchTxt";
-            searchTxt.Size = new Size(206, 42);
-            searchTxt.TabIndex = 14;
+            serachBtn.Click += serachBtn_Click;
             // 
             // sellProductsGridView
             // 
@@ -260,17 +254,26 @@
             sellProductsGridView.Size = new Size(788, 343);
             sellProductsGridView.TabIndex = 13;
             // 
+            // sellerComboBox
+            // 
+            sellerComboBox.FormattingEnabled = true;
+            sellerComboBox.Location = new Point(764, 74);
+            sellerComboBox.Name = "sellerComboBox";
+            sellerComboBox.Size = new Size(155, 23);
+            sellerComboBox.TabIndex = 17;
+            sellerComboBox.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            // 
             // Products
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1123, 494);
+            Controls.Add(sellerComboBox);
             Controls.Add(panel1);
             Controls.Add(panel2);
             Controls.Add(clearBtn);
             Controls.Add(serachBtn);
-            Controls.Add(searchTxt);
             Controls.Add(sellProductsGridView);
             Name = "Products";
             StartPosition = FormStartPosition.CenterScreen;
@@ -283,7 +286,6 @@
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)sellProductsGridView).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -301,7 +303,7 @@
         private FontAwesome.Sharp.IconButton iconButton1;
         private Button clearBtn;
         private Button serachBtn;
-        private TextBox searchTxt;
         private DataGridView sellProductsGridView;
+        private ComboBox sellerComboBox;
     }
 }

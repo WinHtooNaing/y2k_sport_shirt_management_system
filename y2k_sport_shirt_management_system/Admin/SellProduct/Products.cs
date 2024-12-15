@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using y2k_sport_shirt_management_system.Model;
 using y2k_sport_shirt_management_system.Repository;
 
 namespace y2k_sport_shirt_management_system.Admin.SellProduct
@@ -44,6 +45,7 @@ namespace y2k_sport_shirt_management_system.Admin.SellProduct
         private void Products_Load(object sender, EventArgs e)
         {
             LoadSellProductsIntoGrid();
+            LoadSellerNameIntoComboBox();
         }
         private void LoadSellProductsIntoGrid(string searchItem = "")
         {
@@ -55,7 +57,7 @@ namespace y2k_sport_shirt_management_system.Admin.SellProduct
                 if (!string.IsNullOrEmpty(searchItem))
                 {
                     products = products.Where(
-                        product => product.ProductName.Contains(searchItem, StringComparison.OrdinalIgnoreCase)
+                        product => product.sellerName.Contains(searchItem, StringComparison.OrdinalIgnoreCase)
                         ).ToList();
                 }
 
@@ -76,7 +78,7 @@ namespace y2k_sport_shirt_management_system.Admin.SellProduct
                 }
 
 
-               
+
 
                 // Populate "No" column with sequential numbers
                 for (int i = 0; i < sellProductsGridView.Rows.Count; i++)
@@ -99,5 +101,44 @@ namespace y2k_sport_shirt_management_system.Admin.SellProduct
             }
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void LoadSellerNameIntoComboBox()
+        {
+
+            List<string> sellerName = sellProductRepository.GetAllSellerNames();
+
+            if (sellerName.Count > 0)
+            {
+                sellerComboBox.DataSource = sellerName; // Bind the list to the ComboBox
+                sellerComboBox.SelectedIndex = -1;    // Optional: Keep no selection initially
+            }
+            else
+            {
+                MessageBox.Show("No users found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void serachBtn_Click(object sender, EventArgs e)
+        {
+
+            if (sellerComboBox.SelectedIndex != -1)
+            {
+                string selectedSellerName = sellerComboBox.SelectedItem.ToString();
+                LoadSellProductsIntoGrid(selectedSellerName);
+            }
+            else
+            {
+                MessageBox.Show("Please select a seller name from the dropdown.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void clearBtn_Click(object sender, EventArgs e)
+        {
+            LoadSellerNameIntoComboBox();
+            LoadSellProductsIntoGrid();
+        }
     }
 }

@@ -379,7 +379,12 @@ namespace y2k_sport_shirt_management_system.Seller
                 if (row.Cells["ProductId"].Value != null && row.Cells["Quantity"].Value != null)
                 {
                     int productId = Convert.ToInt32(row.Cells["ProductId"].Value);
+                    string productName = row.Cells["ProductName"].Value.ToString();
+                    decimal productPrice = Convert.ToDecimal(row.Cells["ProductPrice"].Value);
                     int soldQuantity = Convert.ToInt32(row.Cells["Quantity"].Value);
+                    string productCategory = row.Cells["ProductCategory"].Value.ToString();
+                    string sellerName = SessionStorage.Session.userName; // Seller name stored in session.
+
 
                     // Fetch the product to update the quantity
                     var product = productRepository.GetProductById(productId);
@@ -389,6 +394,19 @@ namespace y2k_sport_shirt_management_system.Seller
                         if (product.ProductQuantity >= soldQuantity)
                         {
                             product.ProductQuantity -= soldQuantity; // Deduct the sold quantity
+                                                                     // Add sold product to the `sell_products` table
+                            SellProduct sellProduct = new SellProduct
+                            {
+                                ProductName = productName,
+                                ProductPrice = productPrice,
+                                ProductQuantity = soldQuantity,
+                                PtoductTotalPrice = productPrice * soldQuantity,
+                                ProductCategory = productCategory,
+                                sellerName = sellerName
+                            };
+
+                            SellProductRepository sellProductRepository = new SellProductRepository();
+                            sellProductRepository.AddProduct(sellProduct);
                             productRepository.UpdateProduct(product); // Update the product in the database
                         }
                         else

@@ -136,6 +136,7 @@
             iconButton4.TabIndex = 5;
             iconButton4.Text = "bar product";
             iconButton4.UseVisualStyleBackColor = true;
+            iconButton4.Click += iconButton4_Click;
             // 
             // iconButton3
             // 

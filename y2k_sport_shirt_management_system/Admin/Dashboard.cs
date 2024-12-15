@@ -197,5 +197,12 @@ namespace y2k_sport_shirt_management_system.Admin
                 passwordTxt.PasswordChar = '*';
             }
         }
+
+        private void iconButton4_Click(object sender, EventArgs e)
+        {
+            SellProduct.Products products = new SellProduct.Products();
+            products.Show();
+            this.Hide();
+        }
     }
 }

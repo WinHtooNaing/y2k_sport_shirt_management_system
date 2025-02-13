@@ -236,5 +236,12 @@ namespace y2k_sport_shirt_management_system.Admin
             seller.Show();
             this.Hide();
         }
+
+        private void iconButton4_Click(object sender, EventArgs e)
+        {
+            SellProduct.Products product    = new SellProduct.Products();
+            product.Show();
+            this.Hide();
+        }
     }
 }

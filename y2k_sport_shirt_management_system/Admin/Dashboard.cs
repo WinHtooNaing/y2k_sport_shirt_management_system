@@ -18,11 +18,13 @@ namespace y2k_sport_shirt_management_system.Admin
     {
         private readonly DatabaseConnection _dbConnection;
         private readonly SellerRepository sellerRepository;
+        private readonly SellProductRepository sellProductRepository;
         public Dashboard()
         {
             InitializeComponent();
             _dbConnection = new DatabaseConnection();
             sellerRepository = new SellerRepository();
+            sellProductRepository = new SellProductRepository();
 
         }
 
@@ -36,6 +38,9 @@ namespace y2k_sport_shirt_management_system.Admin
 
             int product_count = ProductCount();
             ProductCountTxt.Text = product_count.ToString();
+
+            decimal total_price =sellProductRepository.TotalSellPrice();
+            totalAmountTxt.Text = total_price.ToString() + "(KYAT)";
         }
         private void LoadAdminDetails()
         {

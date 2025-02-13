@@ -97,6 +97,7 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(280, 54);
             panel1.TabIndex = 3;
+            panel1.Paint += panel1_Paint_1;
             // 
             // pictureBox1
             // 
@@ -222,7 +223,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(1008, 523);
+            label1.Location = new Point(973, 523);
             label1.Name = "label1";
             label1.Size = new Size(75, 15);
             label1.TabIndex = 21;
@@ -233,11 +234,12 @@
             totalPriceTxt.AutoSize = true;
             totalPriceTxt.Font = new Font("Times New Roman", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             totalPriceTxt.ForeColor = Color.RoyalBlue;
-            totalPriceTxt.Location = new Point(1089, 518);
+            totalPriceTxt.Location = new Point(1054, 516);
             totalPriceTxt.Name = "totalPriceTxt";
             totalPriceTxt.Size = new Size(50, 22);
             totalPriceTxt.TabIndex = 22;
             totalPriceTxt.Text = "1000";
+            totalPriceTxt.Click += totalPriceTxt_Click;
             // 
             // Dashboard
             // 

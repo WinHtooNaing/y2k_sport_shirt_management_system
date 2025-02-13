@@ -44,7 +44,7 @@
             ProductCountTxt = new Label();
             label1 = new Label();
             panel5 = new Panel();
-            label3 = new Label();
+            totalAmountTxt = new Label();
             label4 = new Label();
             panel6 = new Panel();
             sellerCountTxt = new Label();
@@ -134,7 +134,7 @@
             iconButton4.Name = "iconButton4";
             iconButton4.Size = new Size(208, 49);
             iconButton4.TabIndex = 5;
-            iconButton4.Text = "bar product";
+            iconButton4.Text = "Sell Products";
             iconButton4.UseVisualStyleBackColor = true;
             iconButton4.Click += iconButton4_Click;
             // 
@@ -267,23 +267,23 @@
             // panel5
             // 
             panel5.BorderStyle = BorderStyle.FixedSingle;
-            panel5.Controls.Add(label3);
+            panel5.Controls.Add(totalAmountTxt);
             panel5.Controls.Add(label4);
             panel5.Location = new Point(850, 93);
             panel5.Name = "panel5";
             panel5.Size = new Size(198, 103);
             panel5.TabIndex = 4;
             // 
-            // label3
+            // totalAmountTxt
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Franklin Gothic Medium", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.ForeColor = Color.RoyalBlue;
-            label3.Location = new Point(82, 60);
-            label3.Name = "label3";
-            label3.Size = new Size(28, 30);
-            label3.TabIndex = 1;
-            label3.Text = "4";
+            totalAmountTxt.AutoSize = true;
+            totalAmountTxt.Font = new Font("Franklin Gothic Medium", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            totalAmountTxt.ForeColor = Color.RoyalBlue;
+            totalAmountTxt.Location = new Point(13, 60);
+            totalAmountTxt.Name = "totalAmountTxt";
+            totalAmountTxt.Size = new Size(22, 24);
+            totalAmountTxt.TabIndex = 1;
+            totalAmountTxt.Text = "4";
             // 
             // label4
             // 
@@ -495,7 +495,7 @@
         private Label ProductCountTxt;
         private Label label1;
         private Panel panel5;
-        private Label label3;
+        private Label totalAmountTxt;
         private Label label4;
         private Panel panel6;
         private Label sellerCountTxt;

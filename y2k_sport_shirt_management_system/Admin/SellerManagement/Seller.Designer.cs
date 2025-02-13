@@ -116,7 +116,7 @@
             iconButton4.Name = "iconButton4";
             iconButton4.Size = new Size(208, 49);
             iconButton4.TabIndex = 5;
-            iconButton4.Text = "bar product";
+            iconButton4.Text = "Sell Products";
             iconButton4.UseVisualStyleBackColor = true;
             iconButton4.Click += iconButton4_Click;
             // 

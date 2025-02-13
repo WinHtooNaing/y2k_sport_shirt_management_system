@@ -122,6 +122,34 @@ namespace y2k_sport_shirt_management_system.Repository
 
             return sellerName;
         }
+        public decimal TotalSellPrice()
+        {
+            decimal totalSellPrice = 0;
+            string query = "SELECT SUM(product_total_price) FROM sell_products";
+            try
+            {
+                _dbConnection.OpenConnection();
+                MySqlConnection connection = _dbConnection.GetConnection();
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                object result = cmd.ExecuteScalar();
+                if (result != DBNull.Value && result != null)
+                {
+                    totalSellPrice = Convert.ToDecimal(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while calculating total sell price: " + ex.Message);
+            }
+            finally
+            {
+                _dbConnection.CloseConnection();
+            }
+
+            return totalSellPrice;
+
+        }
 
     }
 }

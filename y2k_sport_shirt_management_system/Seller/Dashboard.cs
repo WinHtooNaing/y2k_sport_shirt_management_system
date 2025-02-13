@@ -15,14 +15,16 @@ namespace y2k_sport_shirt_management_system.Seller
 {
     public partial class Dashboard : Form
     {
-       
+
         private readonly ProductRepository productRepository;
         private readonly FakeSellProductRepository fakeSellProductRepository;
+      
         public Dashboard()
         {
             InitializeComponent();
             productRepository = new ProductRepository();
             fakeSellProductRepository = new FakeSellProductRepository();
+           
         }
 
         private void iconButton6_Click(object sender, EventArgs e)
@@ -37,14 +39,17 @@ namespace y2k_sport_shirt_management_system.Seller
             seller_name.Text = SessionStorage.Session.userName;
             LoadProductsIntoGrid();
             LoadFakeProductsIntoGrid();
-            
-            
 
-            
+
+
+
 
 
             fakeProductsGridView.CellEndEdit += fakeProductsGridView_CellEndEdit;
             fakeProductsGridView.CellValueChanged += fakeProductsGridView_CellValueChanged;
+
+           
+
 
         }
         private void fakeProductsGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -53,6 +58,7 @@ namespace y2k_sport_shirt_management_system.Seller
             {
                 // Commit changes to ensure CellValueChanged is triggered
                 fakeProductsGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
+                //UpdateTotalPrice();
             }
         }
         private void fakeProductsGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -77,12 +83,15 @@ namespace y2k_sport_shirt_management_system.Seller
 
                     // Calculate and update the Total Price
                     fakeProductsGridView.Rows[e.RowIndex].Cells["TotalPrice"].Value = quantity * price;
+
+                    UpdateTotalPrice();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error updating total price: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            
         }
 
         private void LoadProductsIntoGrid(string searchItem = "")
@@ -157,7 +166,7 @@ namespace y2k_sport_shirt_management_system.Seller
         {
             try
             {
-               
+
 
                 var products = fakeSellProductRepository.GetAllProducts();
 
@@ -227,8 +236,16 @@ namespace y2k_sport_shirt_management_system.Seller
                     decimal price = Convert.ToDecimal(fakeProductsGridView.Rows[i].Cells["ProductPrice"].Value);
                     fakeProductsGridView.Rows[i].Cells["TotalPrice"].Value = quantity * price;
                     
+
                 }
-                
+                fakeProductsGridView.RowsAdded += (s, e) =>
+                {
+                    for (int i = e.RowIndex; i < e.RowIndex + e.RowCount; i++)
+                    {
+                        fakeProductsGridView.Rows[i].Cells["Quantity"].Value = 1;
+                    }
+                };
+
                 // Customize the DataGridView
                 fakeProductsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
@@ -247,6 +264,8 @@ namespace y2k_sport_shirt_management_system.Seller
                 {
                     fakeProductsGridView.Columns["ProductPrice"].Visible = false;
                 }
+
+                UpdateTotalPrice();
             }
             catch (Exception ex)
             {
@@ -254,7 +273,7 @@ namespace y2k_sport_shirt_management_system.Seller
             }
 
         }
-       
+
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
@@ -308,6 +327,7 @@ namespace y2k_sport_shirt_management_system.Seller
                         MessageBox.Show("Product  already exists.", "create prduct", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     }
+                   
                 }
                 else
                 {
@@ -434,5 +454,36 @@ namespace y2k_sport_shirt_management_system.Seller
                 MessageBox.Show("product deleted fail", "Seller Delete", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void panel1_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+        private void UpdateTotalPrice()
+        {
+            decimal totalPrice = 0;
+
+            foreach (DataGridViewRow row in fakeProductsGridView.Rows)
+            {
+                if (row.Cells["Quantity"].Value != null && row.Cells["ProductPrice"].Value != null )
+                {
+                    int quantity = int.TryParse(row.Cells["Quantity"].Value.ToString(), out int parsedQuantity) ? parsedQuantity : 1;
+
+                    decimal sellingPrice = Convert.ToDecimal(row.Cells["ProductPrice"].Value);
+                    totalPrice += quantity * sellingPrice;
+                }
+            }
+
+            totalPriceTxt.Text = totalPrice.ToString("N2") + " (Kyats)";
+        }
+
+
+
+        private void totalPriceTxt_Click(object sender, EventArgs e)
+        {
+
+        }
+       
+
     }
 }

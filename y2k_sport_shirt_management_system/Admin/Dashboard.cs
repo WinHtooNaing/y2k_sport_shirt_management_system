@@ -33,11 +33,14 @@ namespace y2k_sport_shirt_management_system.Admin
             admin_name.Text = SessionStorage.Session.userName;
             LoadAdminDetails();
 
-            int seller_count = SellerCount();
-            sellerCountTxt.Text = seller_count.ToString();
+            
 
             int product_count = ProductCount();
             ProductCountTxt.Text = product_count.ToString();
+
+            decimal daily_total_price = sellProductRepository.DailyTotalSellPrice();
+            dailyTotalAmountTxt.Text = daily_total_price.ToString() + "(KYAT)";
+
 
             decimal total_price =sellProductRepository.TotalSellPrice();
             totalAmountTxt.Text = total_price.ToString() + "(KYAT)";
@@ -66,31 +69,7 @@ namespace y2k_sport_shirt_management_system.Admin
                 MessageBox.Show("Error loading seller details: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private int SellerCount()
-        {
-            string query = "SELECT COUNT(*) FROM users WHERE role=0;";
-            try
-            {
-                _dbConnection.OpenConnection();
-                MySqlConnection connection = _dbConnection.GetConnection();
-                MySqlCommand cmd = new MySqlCommand(query, connection);
 
-                return Convert.ToInt32(cmd.ExecuteScalar());
-
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return 0;
-            }
-            finally
-            {
-                _dbConnection.CloseConnection();
-
-            }
-        }
         private int ProductCount()
         {
             string query = "SELECT COUNT(*) FROM products;";

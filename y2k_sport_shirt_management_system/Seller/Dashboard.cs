@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using y2k_sport_shirt_management_system.Admin;
 using y2k_sport_shirt_management_system.Model;
+using y2k_sport_shirt_management_system.pdf;
 using y2k_sport_shirt_management_system.Repository;
 
 namespace y2k_sport_shirt_management_system.Seller
@@ -18,12 +19,14 @@ namespace y2k_sport_shirt_management_system.Seller
 
         private readonly ProductRepository productRepository;
         private readonly FakeSellProductRepository fakeSellProductRepository;
+        private readonly PDFUpload pdfUpload;
       
         public Dashboard()
         {
             InitializeComponent();
             productRepository = new ProductRepository();
             fakeSellProductRepository = new FakeSellProductRepository();
+            pdfUpload = new PDFUpload();
            
         }
 
@@ -394,6 +397,7 @@ namespace y2k_sport_shirt_management_system.Seller
 
         private void sellBtn_Click(object sender, EventArgs e)
         {
+            List<SellProduct> soldProducts = new List<SellProduct>();
             foreach (DataGridViewRow row in fakeProductsGridView.Rows)
             {
                 if (row.Cells["ProductId"].Value != null && row.Cells["Quantity"].Value != null)
@@ -428,6 +432,8 @@ namespace y2k_sport_shirt_management_system.Seller
                             SellProductRepository sellProductRepository = new SellProductRepository();
                             sellProductRepository.AddProduct(sellProduct);
                             productRepository.UpdateProduct(product); // Update the product in the database
+
+                            soldProducts.Add(sellProduct);
                         }
                         else
                         {
@@ -447,6 +453,10 @@ namespace y2k_sport_shirt_management_system.Seller
                 MessageBox.Show("Product Sell successfullly", "selling products", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadFakeProductsIntoGrid();
                 LoadProductsIntoGrid();
+
+
+                // Generate PDF report after selling
+                pdfUpload.GeneratePDF(soldProducts);
 
             }
             else

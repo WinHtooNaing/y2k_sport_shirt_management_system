@@ -47,7 +47,7 @@
             totalAmountTxt = new Label();
             label4 = new Label();
             panel6 = new Panel();
-            sellerCountTxt = new Label();
+            dailyTotalAmountTxt = new Label();
             label6 = new Label();
             label7 = new Label();
             nameTxt = new TextBox();
@@ -258,11 +258,11 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(38, 19);
+            label1.Location = new Point(27, 19);
             label1.Name = "label1";
-            label1.Size = new Size(121, 21);
+            label1.Size = new Size(143, 21);
             label1.TabIndex = 0;
-            label1.Text = "Product Count";
+            label1.Text = "Product Category";
             // 
             // panel5
             // 
@@ -298,33 +298,33 @@
             // panel6
             // 
             panel6.BorderStyle = BorderStyle.FixedSingle;
-            panel6.Controls.Add(sellerCountTxt);
+            panel6.Controls.Add(dailyTotalAmountTxt);
             panel6.Controls.Add(label6);
             panel6.Location = new Point(602, 93);
             panel6.Name = "panel6";
             panel6.Size = new Size(198, 103);
             panel6.TabIndex = 4;
             // 
-            // sellerCountTxt
+            // dailyTotalAmountTxt
             // 
-            sellerCountTxt.AutoSize = true;
-            sellerCountTxt.Font = new Font("Franklin Gothic Medium", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            sellerCountTxt.ForeColor = Color.RoyalBlue;
-            sellerCountTxt.Location = new Point(82, 60);
-            sellerCountTxt.Name = "sellerCountTxt";
-            sellerCountTxt.Size = new Size(28, 30);
-            sellerCountTxt.TabIndex = 1;
-            sellerCountTxt.Text = "4";
+            dailyTotalAmountTxt.AutoSize = true;
+            dailyTotalAmountTxt.Font = new Font("Franklin Gothic Medium", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dailyTotalAmountTxt.ForeColor = Color.RoyalBlue;
+            dailyTotalAmountTxt.Location = new Point(18, 60);
+            dailyTotalAmountTxt.Name = "dailyTotalAmountTxt";
+            dailyTotalAmountTxt.Size = new Size(22, 24);
+            dailyTotalAmountTxt.TabIndex = 1;
+            dailyTotalAmountTxt.Text = "4";
             // 
             // label6
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(46, 19);
+            label6.Location = new Point(18, 19);
             label6.Name = "label6";
-            label6.Size = new Size(102, 21);
+            label6.Size = new Size(157, 21);
             label6.TabIndex = 0;
-            label6.Text = "Seller Count";
+            label6.Text = "Daily Total Amount";
             // 
             // label7
             // 
@@ -498,7 +498,7 @@
         private Label totalAmountTxt;
         private Label label4;
         private Panel panel6;
-        private Label sellerCountTxt;
+        private Label dailyTotalAmountTxt;
         private Label label6;
         private Label label7;
         private TextBox nameTxt;

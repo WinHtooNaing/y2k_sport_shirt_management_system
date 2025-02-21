@@ -151,5 +151,35 @@ namespace y2k_sport_shirt_management_system.Repository
 
         }
 
+        public decimal DailyTotalSellPrice()
+        {
+            decimal dailyTotalSellPrice = 0;
+            string query = "SELECT SUM(product_total_price) FROM sell_products WHERE DATE(created_at) = CURDATE()";
+
+            try
+            {
+                _dbConnection.OpenConnection();
+                MySqlConnection connection = _dbConnection.GetConnection();
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                object result = cmd.ExecuteScalar();
+                if (result != DBNull.Value && result != null)
+                {
+                    dailyTotalSellPrice = Convert.ToDecimal(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while calculating daily total sell price: " + ex.Message);
+            }
+            finally
+            {
+                _dbConnection.CloseConnection();
+            }
+
+            return dailyTotalSellPrice;
+        }
+
+
     }
 }

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using y2k_sport_shirt_management_system.Admin;
 using y2k_sport_shirt_management_system.Model;
-using y2k_sport_shirt_management_system.pdf;
 using y2k_sport_shirt_management_system.Repository;
 
 namespace y2k_sport_shirt_management_system.Seller
@@ -19,14 +18,14 @@ namespace y2k_sport_shirt_management_system.Seller
 
         private readonly ProductRepository productRepository;
         private readonly FakeSellProductRepository fakeSellProductRepository;
-        private readonly PDFUpload pdfUpload;
+        
       
         public Dashboard()
         {
             InitializeComponent();
             productRepository = new ProductRepository();
             fakeSellProductRepository = new FakeSellProductRepository();
-            pdfUpload = new PDFUpload();
+            
            
         }
 
@@ -456,14 +455,47 @@ namespace y2k_sport_shirt_management_system.Seller
 
 
                 // Generate PDF report after selling
-                pdfUpload.GeneratePDF(soldProducts);
 
+                //pdfUpload.GeneratePDF(soldProducts);
+
+                // Generate and display the bill
+                ShowSoldProductsReport(soldProducts);
             }
             else
             {
                 MessageBox.Show("product deleted fail", "Seller Delete", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void ShowSoldProductsReport(List<SellProduct> soldProducts)
+        {
+            if (soldProducts.Count == 0)
+            {
+                MessageBox.Show("No products sold.", "Report", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            StringBuilder report = new StringBuilder();
+            report.AppendLine($"Sold Products Report\n");
+            report.AppendLine($"Date: {DateTime.Now:yyyy-MM-dd}\n");
+            report.AppendLine("-------------------------------------------------------");
+            report.AppendLine("No.   | Product Name  | Price  | Quantity | Total Price | Seller");
+            report.AppendLine("-------------------------------------------------------");
+
+            int index = 1;
+            decimal grandTotal = 0;
+            foreach (var product in soldProducts)
+            {
+                report.AppendLine($"{index,-5} | {product.ProductName,-13} | {product.ProductPrice,5:0.00}  | {product.ProductQuantity,3}        | {product.PtoductTotalPrice,6:0.00}       | {product.sellerName}");
+                grandTotal += product.PtoductTotalPrice;
+                index++;
+            }
+
+            report.AppendLine("-------------------------------------------------------");
+            report.AppendLine($"Total Price is : {grandTotal:0.00} Kyats");
+
+            MessageBox.Show(report.ToString(), "Sold Products Report", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
 
         private void panel1_Paint_1(object sender, PaintEventArgs e)
         {

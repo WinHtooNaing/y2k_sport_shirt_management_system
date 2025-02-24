@@ -32,9 +32,10 @@ namespace y2k_sport_shirt_management_system.Admin
             string product_name = nameTxt.Text;
             decimal product_price = decimal.Parse(priceTxt.Text);
             int product_qty = int.Parse(qtyTxt.Text);
-            string product_category = categoryTxt.Text;
-            if (string.IsNullOrEmpty(nameTxt.Text) || string.IsNullOrEmpty(priceTxt.Text) || string.IsNullOrEmpty(qtyTxt.Text) || string.IsNullOrEmpty(categoryTxt.Text) ) {
-                MessageBox.Show("empty","errr",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            string product_category = categoryTxt.SelectedItem.ToString();
+            if (string.IsNullOrEmpty(nameTxt.Text) || string.IsNullOrEmpty(priceTxt.Text) || string.IsNullOrEmpty(qtyTxt.Text) || string.IsNullOrEmpty(categoryTxt.SelectedItem.ToString()))
+            {
+                MessageBox.Show("empty", "errr", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             Product newProduct = new Product
             {
@@ -45,8 +46,8 @@ namespace y2k_sport_shirt_management_system.Admin
             };
             if (productRepository.AddProduct(newProduct))
             {
-                
-                MessageBox.Show("Product added successfully!","create prduct",MessageBoxButtons.OK,MessageBoxIcon.Information);
+
+                MessageBox.Show("Product added successfully!", "create prduct", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Products product = new Products();
                 product.Show();
                 this.Hide();
@@ -65,6 +66,11 @@ namespace y2k_sport_shirt_management_system.Admin
         }
 
         private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

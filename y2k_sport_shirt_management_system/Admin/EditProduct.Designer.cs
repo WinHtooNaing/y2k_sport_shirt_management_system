@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            categoryTxt = new TextBox();
             label5 = new Label();
             qtyTxt = new TextBox();
             label4 = new Label();
@@ -38,19 +37,8 @@
             nameTxt = new TextBox();
             label2 = new Label();
             label1 = new Label();
+            categoryTxt = new ComboBox();
             SuspendLayout();
-            // 
-            // categoryTxt
-            // 
-            categoryTxt.BackColor = Color.White;
-            categoryTxt.BorderStyle = BorderStyle.FixedSingle;
-            categoryTxt.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            categoryTxt.ForeColor = Color.RoyalBlue;
-            categoryTxt.Location = new Point(130, 401);
-            categoryTxt.Multiline = true;
-            categoryTxt.Name = "categoryTxt";
-            categoryTxt.Size = new Size(232, 40);
-            categoryTxt.TabIndex = 31;
             // 
             // label5
             // 
@@ -161,6 +149,15 @@
             label1.Text = "Edit Product";
             label1.TextAlign = ContentAlignment.TopCenter;
             // 
+            // categoryTxt
+            // 
+            categoryTxt.FormattingEnabled = true;
+            categoryTxt.Items.AddRange(new object[] { "XL", "L", "M" });
+            categoryTxt.Location = new Point(130, 406);
+            categoryTxt.Name = "categoryTxt";
+            categoryTxt.Size = new Size(232, 23);
+            categoryTxt.TabIndex = 31;
+            // 
             // EditProduct
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -186,8 +183,6 @@
         }
 
         #endregion
-
-        private TextBox categoryTxt;
         private Label label5;
         private TextBox qtyTxt;
         private Label label4;
@@ -197,5 +192,6 @@
         private TextBox nameTxt;
         private Label label2;
         private Label label1;
+        private ComboBox categoryTxt;
     }
 }

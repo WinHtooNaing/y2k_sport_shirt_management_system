@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             loginBtn = new Button();
             nameTxt = new TextBox();
             label2 = new Label();
@@ -37,7 +38,9 @@
             qtyTxt = new TextBox();
             label4 = new Label();
             label5 = new Label();
-            categoryTxt = new TextBox();
+            productBindingSource = new BindingSource(components);
+            categoryTxt = new ComboBox();
+            ((System.ComponentModel.ISupportInitialize)productBindingSource).BeginInit();
             SuspendLayout();
             // 
             // loginBtn
@@ -152,16 +155,17 @@
             label5.TabIndex = 20;
             label5.Text = "product category";
             // 
+            // productBindingSource
+            // 
+            productBindingSource.DataSource = typeof(Model.Product);
+            // 
             // categoryTxt
             // 
-            categoryTxt.BackColor = Color.White;
-            categoryTxt.BorderStyle = BorderStyle.FixedSingle;
-            categoryTxt.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            categoryTxt.ForeColor = Color.RoyalBlue;
-            categoryTxt.Location = new Point(135, 401);
-            categoryTxt.Multiline = true;
+            categoryTxt.FormattingEnabled = true;
+            categoryTxt.Items.AddRange(new object[] { "XL", "L", "M" });
+            categoryTxt.Location = new Point(135, 412);
             categoryTxt.Name = "categoryTxt";
-            categoryTxt.Size = new Size(232, 40);
+            categoryTxt.Size = new Size(232, 23);
             categoryTxt.TabIndex = 21;
             // 
             // CreateProduct
@@ -183,6 +187,7 @@
             Name = "CreateProduct";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CreateProduct";
+            ((System.ComponentModel.ISupportInitialize)productBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -198,6 +203,7 @@
         private TextBox qtyTxt;
         private Label label4;
         private Label label5;
-        private TextBox categoryTxt;
+        private BindingSource productBindingSource;
+        private ComboBox categoryTxt;
     }
 }

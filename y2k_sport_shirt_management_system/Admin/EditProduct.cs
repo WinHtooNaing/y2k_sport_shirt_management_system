@@ -43,7 +43,7 @@ namespace y2k_sport_shirt_management_system.Admin
                     nameTxt.Text = product.ProductName;
                     priceTxt.Text = product.ProductPrice.ToString();
                     qtyTxt.Text = product.ProductQuantity.ToString();
-                    categoryTxt.Text = product.ProductCategory; // Assuming you have a ComboBox for categories
+                    categoryTxt.SelectedItem = product.ProductCategory; // Assuming you have a ComboBox for categories
                 }
                 else
                 {
@@ -61,8 +61,8 @@ namespace y2k_sport_shirt_management_system.Admin
             string product_name = nameTxt.Text;
             decimal product_price = decimal.Parse(priceTxt.Text);
             int product_qty = int.Parse(qtyTxt.Text);
-            string product_category = categoryTxt.Text;
-            if (string.IsNullOrEmpty(nameTxt.Text) || string.IsNullOrEmpty(priceTxt.Text) || string.IsNullOrEmpty(qtyTxt.Text) || string.IsNullOrEmpty(categoryTxt.Text))
+            string product_category = categoryTxt.SelectedItem.ToString();
+            if (string.IsNullOrEmpty(nameTxt.Text) || string.IsNullOrEmpty(priceTxt.Text) || string.IsNullOrEmpty(qtyTxt.Text) || string.IsNullOrEmpty(categoryTxt.SelectedItem.ToString()))
             {
                 MessageBox.Show("empty", "errr", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

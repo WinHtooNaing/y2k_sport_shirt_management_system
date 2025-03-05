@@ -1,7 +1,9 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,9 @@ using System.Windows.Forms;
 using y2k_sport_shirt_management_system.Admin;
 using y2k_sport_shirt_management_system.Model;
 using y2k_sport_shirt_management_system.Repository;
-
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using System.Diagnostics;
 namespace y2k_sport_shirt_management_system.Seller
 {
     public partial class Dashboard : Form
@@ -393,7 +397,106 @@ namespace y2k_sport_shirt_management_system.Seller
                 MessageBox.Show("product deleted fail", "Seller Delete", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void GeneratePDF(List<Model.SellProduct> soldItems)
+        {
+            try
+            {
+                // Define the PDF file path
+                string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "SalesReceipt.pdf");
 
+                // Load the Myanmar font
+                // string fontPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Fonts", "Padauk-Regular.ttf"); // Path to the font file
+                //string fontPath = @"C:\\Users\\user\\Desktop\\csharp\\inventory_management_system\\inventory_management_system\\Fonts\\Padauk-Regular.ttf";
+               // BaseFont myanmarFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+               // iTextSharp.text.Font myanmarTextFont = new iTextSharp.text.Font(myanmarFont, 12);
+
+
+
+                // Check if the directory exists
+                string directory = Path.GetDirectoryName(filePath);
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                // Create a new PDF document
+                Document doc = new Document();
+                PdfWriter.GetInstance(doc, new FileStream(filePath, FileMode.Create));
+
+                doc.Open();
+
+                // Add a title
+                iTextSharp.text.Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18);
+                Paragraph title = new Paragraph("EA Sport Bill\n\n", titleFont);
+                title.Alignment = Element.ALIGN_CENTER;
+                doc.Add(title);
+
+                // Add date and seller info
+                doc.Add(new Paragraph($"Date: {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}\n"));
+                doc.Add(new Paragraph($"Seller: {SessionStorage.Session.userName}\n\n"));
+
+                // Create a table with 5 columns
+                PdfPTable table = new PdfPTable(4);
+                table.WidthPercentage = 100;
+                table.SetWidths(new float[] { 30, 100,  50, 80 });
+
+                // Add table headers
+                table.AddCell("No");
+                table.AddCell("Item");
+                table.AddCell("Quantity");
+                table.AddCell("Total Price (Kyats)");
+
+                // Add items to the table
+                int index = 1;
+                decimal grandTotal = 0;
+
+                foreach (var item in soldItems)
+                {
+                    table.AddCell(index.ToString());
+                    table.AddCell(new Phrase(item.ProductName));
+                    table.AddCell(item.ProductQuantity.ToString());
+                    table.AddCell(item.PtoductTotalPrice.ToString("N2"));
+
+                    grandTotal += item.PtoductTotalPrice;
+                    index++;
+                }
+
+                // Add total row
+                PdfPCell totalCell = new PdfPCell(new Phrase("Total Price", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
+                totalCell.Colspan = 3;
+                totalCell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                table.AddCell(totalCell);
+                table.AddCell(grandTotal.ToString("N2") + " Kyats");
+
+                // Add the table to the document
+                doc.Add(table);
+
+                // Close the document
+                doc.Close();
+
+                MessageBox.Show($"Bill saved to {filePath}", "PDF Generated", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Open the PDF automatically
+                try
+                {
+                    // Use ProcessStartInfo to open the PDF with the default application
+                    ProcessStartInfo psi = new ProcessStartInfo
+                    {
+                        FileName = filePath,
+                        UseShellExecute = true // This ensures the default application is used
+                    };
+                    Process.Start(psi);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error opening PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error generating PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private void sellBtn_Click(object sender, EventArgs e)
         {
             List<SellProduct> soldProducts = new List<SellProduct>();
@@ -447,6 +550,7 @@ namespace y2k_sport_shirt_management_system.Seller
                     }
                 }
             }
+            GeneratePDF(soldProducts); // Call PDF generation function
             if (fakeSellProductRepository.DeleteAllProducts())
             {
                 MessageBox.Show("Product Sell successfullly", "selling products", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -459,7 +563,7 @@ namespace y2k_sport_shirt_management_system.Seller
                 //pdfUpload.GeneratePDF(soldProducts);
 
                 // Generate and display the bill
-                ShowSoldProductsReport(soldProducts);
+               // ShowSoldProductsReport(soldProducts);
             }
             else
             {

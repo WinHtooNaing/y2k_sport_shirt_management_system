@@ -92,6 +92,55 @@ namespace y2k_sport_shirt_management_system.Repository
             return products;
 
         }
+        public List<SellProduct> GetDailySoldProducts(string searchItem = "")
+        {
+            List<SellProduct> products = new List<SellProduct>();
+
+            string query = "SELECT * FROM sell_products WHERE DATE(created_at) = CURDATE()";
+            if (!string.IsNullOrEmpty(searchItem))
+            {
+                query += " WHERE seller_name LIKE @SearchItem";
+            }
+            try
+            {
+                _dbConnection.OpenConnection();
+                MySqlConnection connection = _dbConnection.GetConnection();
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                if (!string.IsNullOrEmpty(searchItem))
+                {
+                    cmd.Parameters.AddWithValue("@SearchItem", "%" + searchItem + "%");
+                }
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    products.Add(new SellProduct
+                    {
+                        Id = Convert.ToInt32(reader["id"]),
+                        ProductName = reader["product_name"].ToString(),
+                        ProductPrice = Convert.ToDecimal(reader["product_price"]),
+                        ProductQuantity = Convert.ToInt32(reader["product_quantity"]),
+                        PtoductTotalPrice = Convert.ToDecimal(reader["product_total_price"]),
+                        ProductCategory = reader["product_category"].ToString(),
+                        sellerName = reader["seller_name"].ToString(),
+                    });
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching products: " + ex.Message);
+            }
+            finally
+            {
+                _dbConnection.CloseConnection();
+            }
+
+            return products;
+
+        }
         public List<string> GetAllSellerNames()
         {
             List<string> sellerName = new List<string>();

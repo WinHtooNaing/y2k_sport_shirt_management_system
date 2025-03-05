@@ -52,7 +52,7 @@ namespace y2k_sport_shirt_management_system.Admin.SellProduct
             try
             {
                 // Fetch all products from the repository
-                var products = sellProductRepository.GetAllProducts();
+                var products = sellProductRepository.GetDailySoldProducts();
 
                 if (!string.IsNullOrEmpty(searchItem))
                 {

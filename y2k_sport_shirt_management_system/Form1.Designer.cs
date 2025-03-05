@@ -146,11 +146,11 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Times New Roman", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(84, 76);
+            label2.Location = new Point(93, 76);
             label2.Name = "label2";
-            label2.Size = new Size(106, 31);
+            label2.Size = new Size(81, 31);
             label2.TabIndex = 0;
-            label2.Text = "Cashier";
+            label2.Text = "Seller";
             // 
             // iconButton3
             // 

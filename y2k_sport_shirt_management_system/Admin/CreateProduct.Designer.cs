@@ -39,6 +39,8 @@
             label4 = new Label();
             label5 = new Label();
             productBindingSource = new BindingSource(components);
+            sizeTxt = new ComboBox();
+            label6 = new Label();
             categoryTxt = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)productBindingSource).BeginInit();
             SuspendLayout();
@@ -52,7 +54,7 @@
             loginBtn.FlatStyle = FlatStyle.Flat;
             loginBtn.Font = new Font("Times New Roman", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             loginBtn.ForeColor = Color.White;
-            loginBtn.Location = new Point(135, 459);
+            loginBtn.Location = new Point(138, 532);
             loginBtn.Name = "loginBtn";
             loginBtn.Size = new Size(232, 45);
             loginBtn.TabIndex = 14;
@@ -102,7 +104,7 @@
             priceTxt.BorderStyle = BorderStyle.FixedSingle;
             priceTxt.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             priceTxt.ForeColor = Color.RoyalBlue;
-            priceTxt.Location = new Point(135, 217);
+            priceTxt.Location = new Point(138, 290);
             priceTxt.Multiline = true;
             priceTxt.Name = "priceTxt";
             priceTxt.Size = new Size(232, 40);
@@ -113,7 +115,7 @@
             label3.AutoSize = true;
             label3.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.RoyalBlue;
-            label3.Location = new Point(135, 184);
+            label3.Location = new Point(138, 257);
             label3.Name = "label3";
             label3.Size = new Size(96, 19);
             label3.TabIndex = 15;
@@ -125,7 +127,7 @@
             qtyTxt.BorderStyle = BorderStyle.FixedSingle;
             qtyTxt.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             qtyTxt.ForeColor = Color.RoyalBlue;
-            qtyTxt.Location = new Point(135, 307);
+            qtyTxt.Location = new Point(138, 380);
             qtyTxt.Multiline = true;
             qtyTxt.Name = "qtyTxt";
             qtyTxt.Size = new Size(232, 40);
@@ -137,7 +139,7 @@
             label4.AutoSize = true;
             label4.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.RoyalBlue;
-            label4.Location = new Point(135, 276);
+            label4.Location = new Point(138, 349);
             label4.Name = "label4";
             label4.Size = new Size(117, 19);
             label4.TabIndex = 17;
@@ -149,32 +151,54 @@
             label5.AutoSize = true;
             label5.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = Color.RoyalBlue;
-            label5.Location = new Point(135, 368);
+            label5.Location = new Point(138, 441);
             label5.Name = "label5";
-            label5.Size = new Size(121, 19);
+            label5.Size = new Size(88, 19);
             label5.TabIndex = 20;
-            label5.Text = "product category";
+            label5.Text = "product size";
             // 
             // productBindingSource
             // 
             productBindingSource.DataSource = typeof(Model.Product);
             // 
+            // sizeTxt
+            // 
+            sizeTxt.FormattingEnabled = true;
+            sizeTxt.Items.AddRange(new object[] { "XL", "L", "M" });
+            sizeTxt.Location = new Point(138, 485);
+            sizeTxt.Name = "sizeTxt";
+            sizeTxt.Size = new Size(232, 23);
+            sizeTxt.TabIndex = 21;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.ForeColor = Color.RoyalBlue;
+            label6.Location = new Point(135, 181);
+            label6.Name = "label6";
+            label6.Size = new Size(126, 19);
+            label6.TabIndex = 22;
+            label6.Text = "Product Category";
+            // 
             // categoryTxt
             // 
             categoryTxt.FormattingEnabled = true;
-            categoryTxt.Items.AddRange(new object[] { "XL", "L", "M" });
-            categoryTxt.Location = new Point(135, 412);
+            categoryTxt.Items.AddRange(new object[] { "Home", "Away" });
+            categoryTxt.Location = new Point(138, 217);
             categoryTxt.Name = "categoryTxt";
             categoryTxt.Size = new Size(232, 23);
-            categoryTxt.TabIndex = 21;
+            categoryTxt.TabIndex = 24;
             // 
             // CreateProduct
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(493, 527);
+            ClientSize = new Size(498, 597);
             Controls.Add(categoryTxt);
+            Controls.Add(label6);
+            Controls.Add(sizeTxt);
             Controls.Add(label5);
             Controls.Add(qtyTxt);
             Controls.Add(label4);
@@ -187,6 +211,7 @@
             Name = "CreateProduct";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CreateProduct";
+            Load += CreateProduct_Load;
             ((System.ComponentModel.ISupportInitialize)productBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -204,6 +229,8 @@
         private Label label4;
         private Label label5;
         private BindingSource productBindingSource;
+        private ComboBox sizeTxt;
+        private Label label6;
         private ComboBox categoryTxt;
     }
 }

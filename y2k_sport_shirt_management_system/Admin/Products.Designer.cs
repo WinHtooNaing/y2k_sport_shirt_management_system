@@ -45,11 +45,14 @@
             searchTxt = new TextBox();
             serachBtn = new Button();
             clearBtn = new Button();
+            iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
+            button1 = new Button();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)productsGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)iconPictureBox1).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -285,12 +288,38 @@
             clearBtn.UseVisualStyleBackColor = false;
             clearBtn.Click += button2_Click;
             // 
+            // iconPictureBox1
+            // 
+            iconPictureBox1.BackColor = Color.White;
+            iconPictureBox1.ForeColor = SystemColors.ControlText;
+            iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.None;
+            iconPictureBox1.IconColor = SystemColors.ControlText;
+            iconPictureBox1.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            iconPictureBox1.IconSize = 62;
+            iconPictureBox1.Location = new Point(1120, 180);
+            iconPictureBox1.Name = "iconPictureBox1";
+            iconPictureBox1.Size = new Size(200, 62);
+            iconPictureBox1.TabIndex = 11;
+            iconPictureBox1.TabStop = false;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(1120, 262);
+            button1.Name = "button1";
+            button1.Size = new Size(200, 38);
+            button1.TabIndex = 12;
+            button1.Text = "Download";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // Products
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1123, 494);
+            ClientSize = new Size(1325, 494);
+            Controls.Add(button1);
+            Controls.Add(iconPictureBox1);
             Controls.Add(clearBtn);
             Controls.Add(serachBtn);
             Controls.Add(searchTxt);
@@ -308,6 +337,7 @@
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)productsGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)iconPictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -330,5 +360,7 @@
         private TextBox searchTxt;
         private Button serachBtn;
         private Button clearBtn;
+        private FontAwesome.Sharp.IconPictureBox iconPictureBox1;
+        private Button button1;
     }
 }

@@ -15,6 +15,7 @@ using y2k_sport_shirt_management_system.Repository;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System.Diagnostics;
+using y2k_sport_shirt_management_system.Admin.SellProduct;
 namespace y2k_sport_shirt_management_system.Seller
 {
     public partial class Dashboard : Form
@@ -22,15 +23,15 @@ namespace y2k_sport_shirt_management_system.Seller
 
         private readonly ProductRepository productRepository;
         private readonly FakeSellProductRepository fakeSellProductRepository;
-        
-      
+
+
         public Dashboard()
         {
             InitializeComponent();
             productRepository = new ProductRepository();
             fakeSellProductRepository = new FakeSellProductRepository();
-            
-           
+
+
         }
 
         private void iconButton6_Click(object sender, EventArgs e)
@@ -54,7 +55,7 @@ namespace y2k_sport_shirt_management_system.Seller
             fakeProductsGridView.CellEndEdit += fakeProductsGridView_CellEndEdit;
             fakeProductsGridView.CellValueChanged += fakeProductsGridView_CellValueChanged;
 
-           
+
 
 
         }
@@ -97,7 +98,7 @@ namespace y2k_sport_shirt_management_system.Seller
                     MessageBox.Show("Error updating total price: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            
+
         }
 
         private void LoadProductsIntoGrid(string searchItem = "")
@@ -213,7 +214,7 @@ namespace y2k_sport_shirt_management_system.Seller
                         HeaderText = "Total Price",
                         ReadOnly = true // Total price is calculated, not editable
                     };
-                    fakeProductsGridView.Columns.Insert(7, totalPriceColumn);
+                    fakeProductsGridView.Columns.Insert(8, totalPriceColumn);
                 }
                 // Add Delete button
                 if (!fakeProductsGridView.Columns.Contains("Delete"))
@@ -241,7 +242,7 @@ namespace y2k_sport_shirt_management_system.Seller
                     int quantity = Convert.ToInt32(fakeProductsGridView.Rows[i].Cells["Quantity"].Value ?? 1);
                     decimal price = Convert.ToDecimal(fakeProductsGridView.Rows[i].Cells["ProductPrice"].Value);
                     fakeProductsGridView.Rows[i].Cells["TotalPrice"].Value = quantity * price;
-                    
+
 
                 }
                 fakeProductsGridView.RowsAdded += (s, e) =>
@@ -265,11 +266,11 @@ namespace y2k_sport_shirt_management_system.Seller
                 {
                     fakeProductsGridView.Columns["ProductId"].Visible = false; // Hide the ID column
                 }
-                // Hide the "Product Price" column
-                if (fakeProductsGridView.Columns.Contains("ProductPrice"))
-                {
-                    fakeProductsGridView.Columns["ProductPrice"].Visible = false;
-                }
+                //// Hide the "Product Price" column
+                //if (fakeProductsGridView.Columns.Contains("ProductPrice"))
+                //{
+                //    fakeProductsGridView.Columns["ProductPrice"].Visible = false;
+                //}
 
                 UpdateTotalPrice();
             }
@@ -322,7 +323,8 @@ namespace y2k_sport_shirt_management_system.Seller
                         ProductId = productId,
                         ProductName = product.ProductName,
                         ProductPrice = product.ProductPrice,
-                        ProductCategory = product.ProductCategory
+                        ProductCategory = product.ProductCategory,
+                        Size = product.Size
                     };
                     if (fakeSellProductRepository.AddProduct(newProduct))
                     {
@@ -333,7 +335,7 @@ namespace y2k_sport_shirt_management_system.Seller
                         MessageBox.Show("Product  already exists.", "create prduct", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     }
-                   
+
                 }
                 else
                 {
@@ -407,8 +409,8 @@ namespace y2k_sport_shirt_management_system.Seller
                 // Load the Myanmar font
                 // string fontPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Fonts", "Padauk-Regular.ttf"); // Path to the font file
                 //string fontPath = @"C:\\Users\\user\\Desktop\\csharp\\inventory_management_system\\inventory_management_system\\Fonts\\Padauk-Regular.ttf";
-               // BaseFont myanmarFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-               // iTextSharp.text.Font myanmarTextFont = new iTextSharp.text.Font(myanmarFont, 12);
+                // BaseFont myanmarFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                // iTextSharp.text.Font myanmarTextFont = new iTextSharp.text.Font(myanmarFont, 12);
 
 
 
@@ -436,14 +438,17 @@ namespace y2k_sport_shirt_management_system.Seller
                 doc.Add(new Paragraph($"Seller: {SessionStorage.Session.userName}\n\n"));
 
                 // Create a table with 5 columns
-                PdfPTable table = new PdfPTable(4);
+                PdfPTable table = new PdfPTable(6);
                 table.WidthPercentage = 100;
-                table.SetWidths(new float[] { 30, 100,  50, 80 });
+                table.SetWidths(new float[] { 30, 100, 50, 80, 80, 100 });
 
                 // Add table headers
                 table.AddCell("No");
                 table.AddCell("Item");
+                table.AddCell("Price");
+
                 table.AddCell("Quantity");
+                table.AddCell("Size");
                 table.AddCell("Total Price (Kyats)");
 
                 // Add items to the table
@@ -454,7 +459,9 @@ namespace y2k_sport_shirt_management_system.Seller
                 {
                     table.AddCell(index.ToString());
                     table.AddCell(new Phrase(item.ProductName));
+                    table.AddCell(item.ProductPrice.ToString());
                     table.AddCell(item.ProductQuantity.ToString());
+                    table.AddCell(item.Size.ToString());
                     table.AddCell(item.PtoductTotalPrice.ToString("N2"));
 
                     grandTotal += item.PtoductTotalPrice;
@@ -463,7 +470,7 @@ namespace y2k_sport_shirt_management_system.Seller
 
                 // Add total row
                 PdfPCell totalCell = new PdfPCell(new Phrase("Total Price", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
-                totalCell.Colspan = 3;
+                totalCell.Colspan = 5;
                 totalCell.HorizontalAlignment = Element.ALIGN_RIGHT;
                 table.AddCell(totalCell);
                 table.AddCell(grandTotal.ToString("N2") + " Kyats");
@@ -509,6 +516,7 @@ namespace y2k_sport_shirt_management_system.Seller
                     decimal productPrice = Convert.ToDecimal(row.Cells["ProductPrice"].Value);
                     int soldQuantity = Convert.ToInt32(row.Cells["Quantity"].Value);
                     string productCategory = row.Cells["ProductCategory"].Value.ToString();
+                    string size = row.Cells["size"].Value.ToString();
                     string sellerName = SessionStorage.Session.userName; // Seller name stored in session.
 
 
@@ -528,7 +536,8 @@ namespace y2k_sport_shirt_management_system.Seller
                                 ProductQuantity = soldQuantity,
                                 PtoductTotalPrice = productPrice * soldQuantity,
                                 ProductCategory = productCategory,
-                                sellerName = sellerName
+                                sellerName = sellerName,
+                                Size = size
                             };
 
                             SellProductRepository sellProductRepository = new SellProductRepository();
@@ -563,7 +572,7 @@ namespace y2k_sport_shirt_management_system.Seller
                 //pdfUpload.GeneratePDF(soldProducts);
 
                 // Generate and display the bill
-               // ShowSoldProductsReport(soldProducts);
+                // ShowSoldProductsReport(soldProducts);
             }
             else
             {
@@ -611,7 +620,7 @@ namespace y2k_sport_shirt_management_system.Seller
 
             foreach (DataGridViewRow row in fakeProductsGridView.Rows)
             {
-                if (row.Cells["Quantity"].Value != null && row.Cells["ProductPrice"].Value != null )
+                if (row.Cells["Quantity"].Value != null && row.Cells["ProductPrice"].Value != null)
                 {
                     int quantity = int.TryParse(row.Cells["Quantity"].Value.ToString(), out int parsedQuantity) ? parsedQuantity : 1;
 
@@ -629,7 +638,49 @@ namespace y2k_sport_shirt_management_system.Seller
         {
 
         }
-       
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string barcode = barcodeTxt.Text;
+            try
+            {
+                // Create a ProductRepository instance to fetch product details
+                var productRepository = new ProductRepository();
+
+                // Fetch product by ID
+                var product = productRepository.GetProductByBarcode(barcode);
+
+                if (product != null)
+                {
+                    FakeSellProduct newProduct = new FakeSellProduct
+                    {
+                        ProductId = product.Id,
+                        ProductName = product.ProductName,
+                        ProductPrice = product.ProductPrice,
+                        ProductCategory = product.ProductCategory,
+                        Size = product.Size
+                    };
+                    if (fakeSellProductRepository.AddProduct(newProduct))
+                    {
+                        LoadFakeProductsIntoGrid();
+                        barcodeTxt.Text = "";
+                    }
+                    else
+                    {
+                        MessageBox.Show("Product  already exists.", "create prduct", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Product not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading product details: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

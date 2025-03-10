@@ -15,8 +15,8 @@ namespace y2k_sport_shirt_management_system.Repository
             _dbConnection = new DatabaseConnection();    
         }
         public bool AddProduct(SellProduct product) {
-            string query = "INSERT sell_products (product_name, product_price, product_quantity, product_total_price,product_category,seller_name) " +
-                           "VALUES (@ProductName, @ProductPrice, @ProductQuantity, @ProductTotalPrice,@ProductCategory,@SellerName)";
+            string query = "INSERT sell_products (product_name,product_category, product_price, product_quantity, product_total_price,size,seller_name) " +
+                           "VALUES (@ProductName,@ProductCategory, @ProductPrice, @ProductQuantity, @ProductTotalPrice,@Size,@SellerName)";
 
             try
             {
@@ -28,6 +28,7 @@ namespace y2k_sport_shirt_management_system.Repository
                 cmd.Parameters.AddWithValue("@ProductQuantity", product.ProductQuantity);
                 cmd.Parameters.AddWithValue("@ProductTotalPrice",product.PtoductTotalPrice);
                 cmd.Parameters.AddWithValue("@ProductCategory", product.ProductCategory);
+                cmd.Parameters.AddWithValue("@Size",product.Size);
                 cmd.Parameters.AddWithValue("@SellerName", product.sellerName);
 
                 int rowsAffected = cmd.ExecuteNonQuery();
@@ -76,6 +77,7 @@ namespace y2k_sport_shirt_management_system.Repository
                         PtoductTotalPrice = Convert.ToDecimal(reader["product_total_price"]),
                         ProductCategory = reader["product_category"].ToString(),
                         sellerName = reader["seller_name"].ToString(),
+                        Size = reader["size"].ToString()
                     });
                 }
                 reader.Close();
@@ -124,6 +126,7 @@ namespace y2k_sport_shirt_management_system.Repository
                         ProductQuantity = Convert.ToInt32(reader["product_quantity"]),
                         PtoductTotalPrice = Convert.ToDecimal(reader["product_total_price"]),
                         ProductCategory = reader["product_category"].ToString(),
+                        Size = reader["size"].ToString(),
                         sellerName = reader["seller_name"].ToString(),
                     });
                 }

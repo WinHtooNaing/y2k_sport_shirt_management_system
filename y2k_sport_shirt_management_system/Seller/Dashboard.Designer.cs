@@ -44,6 +44,9 @@
             sellBtn = new Button();
             label1 = new Label();
             totalPriceTxt = new Label();
+            label2 = new Label();
+            barcodeTxt = new TextBox();
+            button1 = new Button();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -53,7 +56,8 @@
             // 
             // panel2
             // 
-            panel2.BackColor = Color.RoyalBlue;
+            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            panel2.BackColor = Color.FromArgb(65, 90, 119);
             panel2.Controls.Add(seller_name);
             panel2.Controls.Add(iconButton1);
             panel2.Location = new Point(278, 0);
@@ -63,6 +67,7 @@
             // 
             // seller_name
             // 
+            seller_name.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             seller_name.AutoSize = true;
             seller_name.Font = new Font("Times New Roman", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             seller_name.ForeColor = Color.White;
@@ -74,6 +79,7 @@
             // 
             // iconButton1
             // 
+            iconButton1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             iconButton1.FlatAppearance.BorderSize = 0;
             iconButton1.FlatStyle = FlatStyle.Flat;
             iconButton1.Flip = FontAwesome.Sharp.FlipOrientation.Horizontal;
@@ -90,6 +96,7 @@
             // 
             // panel1
             // 
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.WhiteSmoke;
             panel1.BorderStyle = BorderStyle.FixedSingle;
             panel1.Controls.Add(pictureBox1);
@@ -111,6 +118,7 @@
             // 
             // iconButton6
             // 
+            iconButton6.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             iconButton6.FlatStyle = FlatStyle.Flat;
             iconButton6.Font = new Font("Times New Roman", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             iconButton6.ForeColor = Color.Crimson;
@@ -179,6 +187,7 @@
             // 
             // fakeProductsGridView
             // 
+            fakeProductsGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             fakeProductsGridView.BackgroundColor = Color.White;
             fakeProductsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             fakeProductsGridView.Location = new Point(818, 118);
@@ -189,6 +198,7 @@
             // 
             // cancleBtn
             // 
+            cancleBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             cancleBtn.BackColor = Color.Crimson;
             cancleBtn.Cursor = Cursors.Hand;
             cancleBtn.FlatAppearance.BorderSize = 0;
@@ -205,6 +215,7 @@
             // 
             // sellBtn
             // 
+            sellBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             sellBtn.BackColor = Color.RoyalBlue;
             sellBtn.Cursor = Cursors.Hand;
             sellBtn.FlatAppearance.BorderSize = 0;
@@ -221,6 +232,7 @@
             // 
             // label1
             // 
+            label1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(973, 523);
@@ -231,6 +243,7 @@
             // 
             // totalPriceTxt
             // 
+            totalPriceTxt.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             totalPriceTxt.AutoSize = true;
             totalPriceTxt.Font = new Font("Times New Roman", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             totalPriceTxt.ForeColor = Color.RoyalBlue;
@@ -241,12 +254,42 @@
             totalPriceTxt.Text = "1000";
             totalPriceTxt.Click += totalPriceTxt_Click;
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(207, 525);
+            label2.Name = "label2";
+            label2.Size = new Size(99, 15);
+            label2.TabIndex = 23;
+            label2.Text = "Sell With Barcode";
+            // 
+            // barcodeTxt
+            // 
+            barcodeTxt.Location = new Point(312, 518);
+            barcodeTxt.Multiline = true;
+            barcodeTxt.Name = "barcodeTxt";
+            barcodeTxt.Size = new Size(191, 34);
+            barcodeTxt.TabIndex = 24;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(522, 518);
+            button1.Name = "button1";
+            button1.Size = new Size(108, 34);
+            button1.TabIndex = 25;
+            button1.Text = "Sell To List";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // Dashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1207, 648);
+            Controls.Add(button1);
+            Controls.Add(barcodeTxt);
+            Controls.Add(label2);
             Controls.Add(totalPriceTxt);
             Controls.Add(label1);
             Controls.Add(sellBtn);
@@ -260,7 +303,8 @@
             Controls.Add(panel2);
             Controls.Add(panel1);
             Name = "Dashboard";
-            Text = "Dashboard";
+            Text = "     ";
+            WindowState = FormWindowState.Maximized;
             Load += Dashboard_Load;
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -289,5 +333,8 @@
         private Button sellBtn;
         private Label label1;
         private Label totalPriceTxt;
+        private Label label2;
+        private TextBox barcodeTxt;
+        private Button button1;
     }
 }

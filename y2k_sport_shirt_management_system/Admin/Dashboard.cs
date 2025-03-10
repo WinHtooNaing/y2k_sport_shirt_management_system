@@ -92,6 +92,41 @@ namespace y2k_sport_shirt_management_system.Admin
 
             }
         }
+        public string GetBestSellingProduct()
+        {
+            string bestSellingProduct = null;
+
+            string query = @"
+                SELECT 
+                    product_name, 
+                    SUM(product_quantity) AS total_quantity
+                FROM 
+                    products
+                GROUP BY 
+                    product_name
+                ORDER BY 
+                    total_quantity DESC
+                LIMIT 1;";
+            _dbConnection.OpenConnection();
+            MySqlConnection connection = _dbConnection.GetConnection();
+            MySqlCommand cmd = new MySqlCommand(query, connection);
+            // Define the SQL query
+            
+
+                
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // Get the product name
+                            bestSellingProduct = reader["product_name"].ToString();
+                        }
+                    }
+                
+            
+
+            return bestSellingProduct;
+        }
 
 
         private void iconButton1_Click(object sender, EventArgs e)

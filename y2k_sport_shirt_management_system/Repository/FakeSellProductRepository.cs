@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.IO.Pipelines;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,8 +46,8 @@ namespace y2k_sport_shirt_management_system.Repository
                 Console.WriteLine("Product with the same ID already exists.");
                 return false;
             }
-            string query = "INSERT fake_sell_products (product_id,product_name,product_price,product_category)" +
-                " VALUES (@ProductId,@ProductName,@ProductPrice,@ProductCategory);";
+            string query = "INSERT fake_sell_products (product_id,product_name,product_category,product_price,size)" +
+                " VALUES (@ProductId,@ProductName,@ProductCategory,@ProductPrice,@Size);";
             try
             {
                 _dbConnection.OpenConnection();
@@ -57,6 +58,7 @@ namespace y2k_sport_shirt_management_system.Repository
                 cmd.Parameters.AddWithValue("@ProductName", product.ProductName);
                 cmd.Parameters.AddWithValue("@ProductPrice", product.ProductPrice);
                 cmd.Parameters.AddWithValue("@ProductCategory", product.ProductCategory);
+                cmd.Parameters.AddWithValue("@Size", product.Size);
 
                 int rowsAffected = cmd.ExecuteNonQuery();
                 return rowsAffected > 0;
@@ -91,7 +93,8 @@ namespace y2k_sport_shirt_management_system.Repository
                         ProductId = Convert.ToInt32(reader["product_id"]),
                         ProductName = reader["product_name"].ToString(),
                         ProductPrice = Convert.ToDecimal(reader["product_price"]),
-                        ProductCategory = reader["product_category"].ToString()
+                        ProductCategory = reader["product_category"].ToString(),
+                        Size = reader["size"].ToString()
                     });
                 }
                 reader.Close();

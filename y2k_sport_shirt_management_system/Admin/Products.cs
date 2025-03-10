@@ -9,8 +9,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using y2k_sport_shirt_management_system.Barcode;
 using y2k_sport_shirt_management_system.Model;
 using y2k_sport_shirt_management_system.Repository;
+using ZXing;
 
 namespace y2k_sport_shirt_management_system.Admin
 {
@@ -18,11 +20,14 @@ namespace y2k_sport_shirt_management_system.Admin
     {
         private readonly ProductRepository productRepository;
         private readonly DatabaseConnection dbConnection;
+        private GenerateBarcode generateBarcode;
+        public string productName;
         public Products()
         {
             InitializeComponent();
             productRepository = new ProductRepository();
             dbConnection = new DatabaseConnection();
+            generateBarcode = new GenerateBarcode();
         }
 
         private void iconButton2_Click(object sender, EventArgs e)
@@ -82,6 +87,7 @@ namespace y2k_sport_shirt_management_system.Admin
                     editColumn.DefaultCellStyle.ForeColor = Color.White;
                 }
 
+
                 // Add Delete button
                 if (!productsGridView.Columns.Contains("Delete"))
                 {
@@ -95,6 +101,21 @@ namespace y2k_sport_shirt_management_system.Admin
                     productsGridView.Columns.Add(deleteColumn);
                     deleteColumn.DefaultCellStyle.BackColor = Color.Red;
                     deleteColumn.DefaultCellStyle.ForeColor = Color.White;
+                }
+                // Add Barcode  button
+                // Add Barcode button
+                if (!productsGridView.Columns.Contains("GenerateBarcode"))
+                {
+                    DataGridViewButtonColumn barcodeColumn = new DataGridViewButtonColumn
+                    {
+                        Name = "GenerateBarcode",
+                        HeaderText = "",
+                        Text = "GenerateBarcode",
+                        UseColumnTextForButtonValue = true
+                    };
+                    productsGridView.Columns.Add(barcodeColumn);
+                    barcodeColumn.DefaultCellStyle.BackColor = Color.BurlyWood;
+                    barcodeColumn.DefaultCellStyle.ForeColor = Color.White;
                 }
 
                 // Populate "No" column with sequential numbers
@@ -111,6 +132,11 @@ namespace y2k_sport_shirt_management_system.Admin
                 {
                     productsGridView.Columns["Id"].Visible = false; // Hide the ID column
                 }
+                if (productsGridView.Columns.Contains("BarCode"))
+                {
+                    productsGridView.Columns["Barcode"].Visible = false; // Hide the ID column
+                }
+
             }
             catch (Exception ex)
             {
@@ -121,10 +147,12 @@ namespace y2k_sport_shirt_management_system.Admin
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             // Ensure the clicked cell is a button
-            if (e.RowIndex >= 0 && (e.ColumnIndex == productsGridView.Columns["Edit"].Index || e.ColumnIndex == productsGridView.Columns["Delete"].Index))
+            if (e.RowIndex >= 0 && (e.ColumnIndex == productsGridView.Columns["Edit"].Index || e.ColumnIndex == productsGridView.Columns["Delete"].Index || e.ColumnIndex == productsGridView.Columns["GenerateBarcode"].Index))
             {
                 // Get the selected product's ID
                 int productId = Convert.ToInt32(productsGridView.Rows[e.RowIndex].Cells["Id"].Value);
+                string barcode = productsGridView.Rows[e.RowIndex].Cells["Barcode"].Value.ToString();
+               
 
                 if (e.ColumnIndex == productsGridView.Columns["Edit"].Index)
                 {
@@ -135,6 +163,11 @@ namespace y2k_sport_shirt_management_system.Admin
                 {
                     // Delete button clicked
                     DeleteProduct(productId);
+                }
+                else if (e.ColumnIndex == productsGridView.Columns["GenerateBarcode"].Index)
+                {
+                    generateBarcode.BarCodeGenerator(BarcodeFormat.CODE_128, iconPictureBox1, barcode);
+                    productName = productsGridView.Rows[e.RowIndex].Cells["ProductName"].Value.ToString();
                 }
             }
         }
@@ -239,9 +272,56 @@ namespace y2k_sport_shirt_management_system.Admin
 
         private void iconButton4_Click(object sender, EventArgs e)
         {
-            SellProduct.Products product    = new SellProduct.Products();
+            SellProduct.Products product = new SellProduct.Products();
             product.Show();
             this.Hide();
+        }
+        public void SaveImageFromPictureBox(PictureBox pic, string barcodeText)
+        {
+            try
+            {
+                if (pic.Image == null)
+                {
+                    MessageBox.Show("No image to save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Define the folder path on the desktop
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                string barcodeFolderPath = Path.Combine(desktopPath, "barcode");
+
+                // Create the folder if it doesn't exist
+                if (!Directory.Exists(barcodeFolderPath))
+                {
+                    Directory.CreateDirectory(barcodeFolderPath);
+                }
+
+                // Generate the file path for the barcode image
+                string filePath = Path.Combine(barcodeFolderPath, $"{barcodeText}_barcode.png");
+
+                // Save the image from the PictureBox to the file
+                pic.Image.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+
+                MessageBox.Show($"Barcode saved to {filePath}", "Save Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error saving image: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (iconPictureBox1.Image == null)
+            {
+                MessageBox.Show("No barcode image to save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Get the barcode text (e.g., from the selected row in the DataGridView)
+            string barcodeText = productName;
+            // Save the image to the Desktop/barcode folder
+            SaveImageFromPictureBox(iconPictureBox1, barcodeText);
         }
     }
 }

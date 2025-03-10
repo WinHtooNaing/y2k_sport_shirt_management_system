@@ -43,7 +43,8 @@ namespace y2k_sport_shirt_management_system.Admin
                     nameTxt.Text = product.ProductName;
                     priceTxt.Text = product.ProductPrice.ToString();
                     qtyTxt.Text = product.ProductQuantity.ToString();
-                    categoryTxt.SelectedItem = product.ProductCategory; // Assuming you have a ComboBox for categories
+                    sizeTxt.SelectedItem = product.Size; // Assuming you have a ComboBox for categories
+                    categoryTxt.SelectedItem = product.ProductCategory;
                 }
                 else
                 {
@@ -59,10 +60,12 @@ namespace y2k_sport_shirt_management_system.Admin
         private void loginBtn_Click(object sender, EventArgs e)
         {
             string product_name = nameTxt.Text;
+            string product_category = categoryTxt.SelectedItem.ToString();
+
             decimal product_price = decimal.Parse(priceTxt.Text);
             int product_qty = int.Parse(qtyTxt.Text);
-            string product_category = categoryTxt.SelectedItem.ToString();
-            if (string.IsNullOrEmpty(nameTxt.Text) || string.IsNullOrEmpty(priceTxt.Text) || string.IsNullOrEmpty(qtyTxt.Text) || string.IsNullOrEmpty(categoryTxt.SelectedItem.ToString()))
+            string size = sizeTxt.SelectedItem.ToString();
+            if (string.IsNullOrEmpty(nameTxt.Text) || string.IsNullOrEmpty(priceTxt.Text) || string.IsNullOrEmpty(qtyTxt.Text) || string.IsNullOrEmpty(sizeTxt.SelectedItem.ToString()))
             {
                 MessageBox.Show("empty", "errr", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -70,9 +73,10 @@ namespace y2k_sport_shirt_management_system.Admin
             {
                 Id = product_id,
                 ProductName = product_name,
+                ProductCategory = product_category,
                 ProductPrice = product_price,
                 ProductQuantity = product_qty,
-                ProductCategory = product_category
+                Size = size
             };
             if (productRepository.UpdateProduct(product)) {
                 MessageBox.Show("Updated product successfully","update product",MessageBoxButtons.OK,MessageBoxIcon.Information);

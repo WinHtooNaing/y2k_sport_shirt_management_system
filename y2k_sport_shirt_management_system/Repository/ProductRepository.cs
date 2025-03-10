@@ -18,8 +18,8 @@ namespace y2k_sport_shirt_management_system.Repository
         // create
         public bool AddProduct(Product product)
         {
-            string query = "INSERT products (product_name, product_price, product_quantity, product_category) " +
-                           "VALUES (@ProductName, @ProductPrice, @ProductQuantity, @ProductCategory)";
+            string query = "INSERT products (product_name,product_category, product_price, product_quantity, size, barcode) " +
+                           "VALUES (@ProductName,@ProductCategory, @ProductPrice, @ProductQuantity, @Size,@Barcode)";
 
             try
             {
@@ -30,6 +30,9 @@ namespace y2k_sport_shirt_management_system.Repository
                 cmd.Parameters.AddWithValue("@ProductPrice", product.ProductPrice);
                 cmd.Parameters.AddWithValue("@ProductQuantity", product.ProductQuantity);
                 cmd.Parameters.AddWithValue("@ProductCategory", product.ProductCategory);
+                cmd.Parameters.AddWithValue("@Size", product.Size);
+                cmd.Parameters.AddWithValue("@Barcode", product.Barcode);
+
 
                 int rowsAffected =cmd.ExecuteNonQuery();
                return rowsAffected > 0;
@@ -78,7 +81,9 @@ namespace y2k_sport_shirt_management_system.Repository
                         ProductName = reader["product_name"].ToString(),
                         ProductPrice = Convert.ToDecimal(reader["product_price"]),
                         ProductQuantity = Convert.ToInt32(reader["product_quantity"]),
-                        ProductCategory = reader["product_category"].ToString()
+                        ProductCategory = reader["product_category"].ToString(),
+                        Size = reader["size"].ToString(),
+                        Barcode = reader["barcode"].ToString(),
                     });
                 }
                 reader.Close();
@@ -97,8 +102,8 @@ namespace y2k_sport_shirt_management_system.Repository
         // Update
         public bool UpdateProduct(Product product)
         {
-            string query = "UPDATE products SET product_name = @ProductName, product_price = @ProductPrice, " +
-                           "product_quantity = @ProductQuantity, product_category = @ProductCategory " +
+            string query = "UPDATE products SET product_name = @ProductName, product_category = @ProductCategory, product_price = @ProductPrice, " +
+                           "product_quantity = @ProductQuantity, size = @Size " +
                            "WHERE id = @Id";
 
             try
@@ -111,6 +116,8 @@ namespace y2k_sport_shirt_management_system.Repository
                 cmd.Parameters.AddWithValue("@ProductPrice", product.ProductPrice);
                 cmd.Parameters.AddWithValue("@ProductQuantity", product.ProductQuantity);
                 cmd.Parameters.AddWithValue("@ProductCategory", product.ProductCategory);
+                cmd.Parameters.AddWithValue("@Size", product.Size);
+
 
                 int rowsAffected = cmd.ExecuteNonQuery();
                 return rowsAffected > 0;
@@ -172,7 +179,11 @@ namespace y2k_sport_shirt_management_system.Repository
                         ProductName = reader["product_name"].ToString(),
                         ProductPrice = Convert.ToDecimal(reader["product_price"]),
                         ProductQuantity = Convert.ToInt32(reader["product_quantity"]),
-                        ProductCategory = reader["product_category"].ToString()
+                        ProductCategory = reader["product_category"].ToString(),
+                        Size = reader["size"].ToString(),
+                        Barcode = reader["barcode"].ToString(),
+
+
                     };
                 }
                 reader.Close();
@@ -188,6 +199,47 @@ namespace y2k_sport_shirt_management_system.Repository
 
             return null;
         }
+        // Read by Barcode 
+        public Product GetProductByBarcode(string barcode)
+        {
+            string query = "SELECT * FROM products WHERE barcode = @Barcode";
 
+            try
+            {
+                _dbConnection.OpenConnection();
+                MySqlConnection connection = _dbConnection.GetConnection();
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@Barcode", barcode);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    return new Product
+                    {
+                        Id = Convert.ToInt32(reader["id"]),
+                        ProductName = reader["product_name"].ToString(),
+                        ProductPrice = Convert.ToDecimal(reader["product_price"]),
+                        ProductQuantity = Convert.ToInt32(reader["product_quantity"]),
+                        ProductCategory = reader["product_category"].ToString(),
+                        Size = reader["size"].ToString(),
+                        Barcode = reader["barcode"].ToString(),
+
+
+                    };
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching product: " + ex.Message);
+            }
+            finally
+            {
+                _dbConnection.CloseConnection();
+            }
+
+            return null;
+        }
     }
 }
